@@ -19,4 +19,9 @@ class QuestionnaireFragment : Fragment() {
         _binding = FragmentQuestionnaireBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

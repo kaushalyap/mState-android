@@ -1,12 +1,19 @@
 <resources>
     <string name="app_name">mState</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="settings">Settings</string>
     <string name="history">History</string>
     <string name="about">About</string>
     <string name="find_out_your_current_mental_state">Find out your current mental State</string>
     <string name="did_you_know_according_who_30_80_people_with_mental_issues_does_not_seek_treatment_which_leads_to_bitter_outcomes">According WHO 30% - 80% people with mental issues does not seek treatment which leads to bitter outcomes</string>
-    <string name="disclaimer">Disclaimer</string>
     <string name="female_with_her_thoughts">female with her thoughts</string>
+    <string name="by_continuing_you_agree_to_our_terms_and_conditions">By continuing you agree to our terms and conditions</string>
+    <string name="try_without_login_in"><u>Try without login in</u></string>
+    <string name="female_doing_mindfulness_meditation">Female doing mindfulness meditation</string>
+    <string name="disclaimer">Disclaimer</string>
+    <string name="disclaimer_desc">While this app help to diagnose certain moods through medical questionnaires , this system is not perfect, please refer to trained medical professional for a more accurate diagnosis. \n\nWe as mState developers do not hold responsible for any damage caused by using this app.</string>
+    <string name="version_0_0_1">Version : 0.0.1</string>
+    <string name="mstate_logo">mState logo</string>
+    <string name="app_desc">mState help people to diagnose user\'s mood and help and encourage users to seek help and notify relevant contacts if they are in a troubled situation.</string>
+    <string name="stethoscope">Stethoscope</string>
+    <!--    <string name="default_web_client_id">726659192012-jvph9pm9jgjf50ffksnkklcvmlb0l36v.apps.googleusercontent.com</string>-->
 </resources>

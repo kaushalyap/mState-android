@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -33,6 +34,15 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    signingConfigs {
+        debug {
+            storePassword '123456'
+            storeFile file('keystores/debug.keystore') // dummy keystore for easy testing
+            keyPassword '123456'
+            keyAlias 'key0'
+        }
+    }
 }
 
 dependencies {
@@ -48,16 +58,14 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation 'com.google.android.material:material:1.5.0'
 
-    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
-
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
-    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.android.gms:play-services-auth:20.1.0'
 
     // Declare the dependency for the Cloud Firestore library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-firestore-ktx'
-
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

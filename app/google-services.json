@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "947231905454",
+    "project_id": "mstate-c0079",
+    "storage_bucket": "mstate-c0079.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947231905454:android:94e4b48e78f2cb6e967f3f",
+        "android_client_info": {
+          "package_name": "com.example.mstate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947231905454-84ucr1as94irmrianja2h019qs2ei9m9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mstate",
+            "certificate_hash": "0dda2ee8fce98b50396a0a78a4094d32ef0781bf"
+          }
+        },
+        {
+          "client_id": "947231905454-mld8hlonaq1ujd50njr3f8v1p5vuji4c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUrmWyaKWiK9S59_20mfZc1pW01JwJn2I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947231905454-mld8hlonaq1ujd50njr3f8v1p5vuji4c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

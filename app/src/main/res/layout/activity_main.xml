@@ -22,13 +22,16 @@
         android:layout_gravity="bottom"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         app:menu="@menu/bottom_app_bar"
+        android:visibility="gone"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/stethoscope"
         android:id="@+id/fabCheck"
         app:layout_anchor="@id/bottomAppBar"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_stethoscope_24" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
