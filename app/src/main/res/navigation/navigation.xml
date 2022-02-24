@@ -28,13 +28,15 @@
     </fragment>
     <fragment
         android:id="@+id/questionnaireFragment"
-        android:name="com.example.mstate.ui.fragments.QuestionnaireFragment"
+        android:name="com.example.mstate.ui.fragments.QuestionnaireListFragment"
         android:label="fragment_questionnaire"
-        tools:layout="@layout/fragment_questionnaire" >
+        tools:layout="@layout/fragment_questionnaire_list">
         <action
-            android:id="@+id/action_questionnaire_to_result"
-            app:destination="@id/resultFragment"
-            app:popUpTo="@id/mainFragment" />
+            android:id="@+id/action_questionnaire_to_epds"
+            app:destination="@id/epdsFragment" />
+        <action
+            android:id="@+id/action_questionnaire_to_phq"
+            app:destination="@id/phqFragment" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
@@ -74,4 +76,24 @@
     <action
         android:id="@+id/action_global_signIn"
         app:destination="@id/signInFragment" />
+    <fragment
+        android:id="@+id/epdsFragment"
+        android:name="com.example.mstate.ui.fragments.EpdsFragment"
+        android:label="fragment_epds"
+        tools:layout="@layout/fragment_epds">
+        <action
+            android:id="@+id/action_epds_to_result"
+            app:destination="@id/resultFragment"
+            app:popUpTo="@id/questionnaireFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/phqFragment"
+        android:name="com.example.mstate.ui.fragments.PhqFragment"
+        android:label="fragment_phq"
+        tools:layout="@layout/fragment_phq">
+        <action
+            android:id="@+id/action_phq_to_result"
+            app:destination="@id/resultFragment"
+            app:popUpTo="@id/questionnaireFragment" />
+    </fragment>
 </navigation>

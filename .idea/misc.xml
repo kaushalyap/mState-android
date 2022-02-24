@@ -5,8 +5,11 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_about_24.xml" value="0.237" />
         <entry key="app/src/main/res/drawable/ic_btn_google_light_normal.xml" value="0.3345" />
+        <entry key="app/src/main/res/drawable/ic_contact_24.xml" value="0.3345" />
         <entry key="app/src/main/res/drawable/ic_history_24.xml" value="0.237" />
+        <entry key="app/src/main/res/drawable/ic_message_24.xml" value="0.3345" />
         <entry key="app/src/main/res/drawable/ic_settings_24.xml" value="0.237" />
+        <entry key="app/src/main/res/drawable/ic_sms_24.xml" value="0.3345" />
         <entry key="app/src/main/res/drawable/ic_stethoscope_24.xml" value="0.237" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.37817028985507245" />
         <entry key="app/src/main/res/layout/fragment_about.xml" value="0.40989583333333335" />

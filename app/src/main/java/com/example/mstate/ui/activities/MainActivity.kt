@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -20,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import permissions.dispatcher.PermissionRequest
 
 private const val TAG = "MainActivity"
 private const val RC_SIGN_IN = 9001
@@ -151,5 +154,17 @@ class MainActivity : AppCompatActivity() {
     internal fun hideFabBottomAppBar() {
         binding.fabCheck.hide()
         binding.bottomAppBar.performHide()
+    }
+
+    internal fun showPermissionRationaleDialog(
+        @StringRes messageResId: Int,
+        request: PermissionRequest
+    ) {
+        AlertDialog.Builder(this)
+            .setPositiveButton(R.string.allow) { _, _ -> request.proceed() }
+            .setNegativeButton(R.string.deny) { _, _ -> request.cancel() }
+            .setCancelable(false)
+            .setMessage(messageResId)
+            .show()
     }
 }

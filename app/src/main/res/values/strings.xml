@@ -15,5 +15,26 @@
     <string name="app_desc">mState help people to diagnose user\'s mood and help and encourage users to seek help and notify relevant contacts if they are in a troubled situation.</string>
     <string name="stethoscope">Stethoscope</string>
     <string name="login_with_magic_link">Login with Magic Link</string>
-    <!--    <string name="default_web_client_id">726659192012-jvph9pm9jgjf50ffksnkklcvmlb0l36v.apps.googleusercontent.com</string>-->
+    <string name="personal_health_questionnaire_depression_scale_phq8">Personal Health Questionnaire Depression Scale (PHQ8)</string>
+    <string name="edinburgh_postnatal_depression_scale_epds">Edinburgh Postnatal Depression Scale (EPDS)</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pref_sms">sms</string>
+    <string name="pref_emergency_contact">emergency-contact</string>
+    <string name="pref_call">call</string>
+
+    <string name="permission_call_never_ask_again">Call permission will be never asked again</string>
+    <string name="permission_sms_never_ask_again">SMS permission will be never asked again</string>
+    <string name="permission_call_denied">Call permission was denied!</string>
+    <string name="permission_sms_denied">SMS permission was denied!</string>
+    <string name="permission_contacts_never_ask_again">Contact read permission will be never asked again!</string>
+    <string name="permission_contacts_denied">Contacts read permission was denied!</string>
+    <string name="permission_contacts_rationale">Contact read permission is necessary pick an emergency contact</string>
+    <string name="permission_call_rationale">Call permission is needed to make a call to your emergency contact</string>
+    <string name="permission_sms_rationale">SMS permission is needed to send SMS to your emergency contact</string>
+    <string name="allow">Allow</string>
+    <string name="deny">Deny</string>
+    <string name="pref_emergency_contact_summary">Who to contact when depressed</string>
+    <string name="pref_sms_summary">Send SMS to emergency contact</string>
+    <string name="pref_call_summary">Call emergency contact</string>
 </resources>
