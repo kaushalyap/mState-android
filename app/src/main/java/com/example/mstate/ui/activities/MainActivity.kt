@@ -8,7 +8,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.mstate.R
 import com.example.mstate.databinding.ActivityMainBinding
@@ -94,7 +94,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initNavigation() {
-        navController = findNavController(R.id.nav_host_fragment)
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragment_container_view) as NavHostFragment
+        navController = navHostFragment.navController
         binding.bottomAppBar.setupWithNavController(navController)
         setSupportActionBar(binding.bottomAppBar)
     }

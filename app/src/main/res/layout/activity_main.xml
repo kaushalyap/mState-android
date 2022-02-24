@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.MainActivity">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:id="@+id/nav_host_fragment"
+        android:id="@+id/fragment_container_view"
         android:name="androidx.navigation.fragment.NavHostFragment"
         app:navGraph="@navigation/navigation"
         app:defaultNavHost="true" />
@@ -22,7 +22,6 @@
         android:layout_gravity="bottom"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         app:menu="@menu/bottom_app_bar"
-        android:visibility="gone"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -31,7 +30,6 @@
         android:contentDescription="@string/stethoscope"
         android:id="@+id/fabCheck"
         app:layout_anchor="@id/bottomAppBar"
-        android:visibility="gone"
         app:srcCompat="@drawable/ic_stethoscope_24" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

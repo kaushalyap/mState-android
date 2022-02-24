@@ -24,19 +24,23 @@
         android:id="@+id/btnGoogleSignIn"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         app:buttonSize="wide"
-        app:layout_constraintBottom_toTopOf="@+id/lbWithoutLogin"
+        app:layout_constraintBottom_toTopOf="@+id/btnLoginMagicLink"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <TextView
-        android:id="@+id/lbWithoutLogin"
-        android:layout_width="wrap_content"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLoginMagicLink"
         android:layout_height="wrap_content"
-        android:text="@string/try_without_login_in"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:text="@string/login_with_magic_link"
+
+        android:textAllCaps="false"
+        android:textColor="#808080"
         app:layout_constraintBottom_toTopOf="@+id/lbAgreement"
         app:layout_constraintEnd_toEndOf="@+id/btnGoogleSignIn"
         app:layout_constraintStart_toStartOf="@+id/btnGoogleSignIn"
@@ -47,6 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+
         android:text="@string/by_continuing_you_agree_to_our_terms_and_conditions"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

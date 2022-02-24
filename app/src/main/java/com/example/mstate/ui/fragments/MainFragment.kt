@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.mstate.databinding.FragmentMainBinding
+import com.example.mstate.ui.activities.MainActivity
 
 
 class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-//    private lateinit var mainActivity: MainActivity
+    private lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,8 +25,8 @@ class MainFragment : Fragment() {
     }
 
     private fun init() {
-//        mainActivity = activity as MainActivity
-//        mainActivity.showFabBottomAppBar()
+        mainActivity = activity as MainActivity
+        mainActivity.showFabBottomAppBar()
     }
 
     override fun onDestroyView() {
