@@ -49,7 +49,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         prefEmergencyContact.summaryProvider =
             Preference.SummaryProvider<Preference> {
                 if (savedNumber == "")
-                    "Who to contact when drunk"
+                    "Who to contact when depressed"
                 else
                     savedNumber
             }

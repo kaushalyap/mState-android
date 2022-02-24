@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.mstate.databinding.FragmentResultBinding
+import com.example.mstate.models.AutomatedResponse
 
 class ResultFragment : Fragment() {
 
@@ -17,6 +18,8 @@ class ResultFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentResultBinding.inflate(inflater, container, false)
+        val automatedResponse = AutomatedResponse()
+        automatedResponse.respond(requireActivity(), requireContext())
         return binding.root
     }
 
