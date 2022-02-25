@@ -1,14 +1,510 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.EpdsFragment">
+    android:layout_margin="20dp"
+    tools:context=".ui.fragments.PhqFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edinburgh_postnatal_depression_scale_epds"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/as_you_are_pregnant_or_have_recently_had_a_baby_we_would_like_to_know_how_you_are_feeling_please_check_the_answer_that_comes_closest_to_how_you_have_felt_in_the_past_7_days_not_just_how_you_feel_today"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/textView6"
+                tools:layout_editor_absoluteX="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/in_the_past_7_days"
+                android:textSize="30sp" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView7">
+
+                <TableRow
+                    android:id="@+id/row_q1"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_1_i_have_been_able_to_laugh_and_see_the_funny_side_of_things"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <TableRow android:id="@+id/row_a1">
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radio_a11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/as_much_as_i_always_could" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/not_quite_so_much_now" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/definitely_not_so_much_now" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/not_at_all" />
+                    </RadioGroup>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/row_q2"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_2_i_have_looked_forward_with_enjoyment_to_things"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <TableRow android:id="@+id/row_a2">
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radio_a21"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/as_much_as_i_ever_did" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rather_less_than_i_used_to" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a23"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/definitely_less_than_i_used_to" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/hardly_at_all" />
+                    </RadioGroup>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/row_q3"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_3_i_have_blamed_myself_unnecessarily_when_things_went_wrong"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <TableRow android:id="@+id/row_a3">
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radio_a31"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_most_of_the_time" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a32"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_some_of_the_time" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a33"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/not_very_often" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a34"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no_never" />
+                    </RadioGroup>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/row_q4"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_4_i_have_been_anxious_or_worried_for_no_good_reason"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <TableRow android:id="@+id/row_a4">
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radio_a41"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no_not_at_all" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a42"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/hardly_ever" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a43"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_sometimes" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a44"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_very_often" />
+                    </RadioGroup>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/row_q5"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_5_i_have_felt_scared_or_panicky_for_no_very_good_reason"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <TableRow android:id="@+id/row_a5">
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radio_a51"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_quite_a_lot" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a52"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_sometimes" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a53"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no_not_much" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a54"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no_not_at_all" />
+                    </RadioGroup>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/row_q6"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_6_things_have_been_getting_on_top_of_me"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <TableRow android:id="@+id/row_a6">
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radio_a61"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_most_of_the_time_i_haven_t_been_able_to_cope_at_all" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a62"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_sometimes_i_haven_t_been_coping_as_well_as_usual" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a63"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no_most_of_the_time_i_have_coped_quite_well" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a64"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no_i_have_been_coping_as_well_as_ever" />
+                    </RadioGroup>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/row_q7"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_7i_have_been_so_unhappy_that_i_have_had_difficulty_sleeping"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <TableRow android:id="@+id/row_a7">
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radio_a71"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_most_of_the_time" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a72"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_sometimes" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a73"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/not_very_often" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a74"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no_not_at_all" />
+                    </RadioGroup>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/row_q8"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_8_i_have_felt_sad_or_miserable"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <TableRow android:id="@+id/row_a8">
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radio_a81"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_most_of_the_time" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a82"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_quite_often" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a83"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/not_very_often" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a84"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no_not_at_all" />
+                    </RadioGroup>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/row_q9"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_9_i_have_been_so_unhappy_that_i_have_been_crying"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <TableRow android:id="@+id/row_a9">
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radio_a91"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_most_of_the_time" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a92"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_quite_often" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a93"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/only_occasionally" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a94"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no_never" />
+                    </RadioGroup>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/row_q10"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_10_the_thought_of_harming_myself_has_occurred_to_me"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <TableRow android:id="@+id/row_a10">
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radio_a101"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yes_quite_often" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a102"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sometimes" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a103"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/hardly_ever" />
+
+                        <RadioButton
+                            android:id="@+id/radio_a104"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/never" />
+                    </RadioGroup>
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

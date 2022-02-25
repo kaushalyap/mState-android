@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="6dp"
-        android:text="@string/personal_health_questionnaire_depression_scale_phq8"
+        android:text="@string/personal_health_questionnaire_depression_scale_phq9"
         android:textAllCaps="false"
         android:textColor="#808080"
         android:textSize="24sp" />

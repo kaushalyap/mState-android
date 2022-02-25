@@ -1,14 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="20dp"
     tools:context=".ui.fragments.PhqFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/personal_health_questionnaire_depression_scale_phq9"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/over_the_last_2_weeks_how_often_have_you_been_bothered_by_any_of_the_following_problems_circle_one_number_on_each_line"
+                app:layout_constraintTop_toBottomOf="@+id/textView6"
+                tools:layout_editor_absoluteX="16dp" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView7">
+
+                <TableRow
+                    android:id="@+id/row_q1"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_1_little_interest_or_pleasure_in_doing_things"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <include
+                    android:id="@+id/layout_a1"
+                    layout="@layout/layout_answers" />
+
+                <TableRow
+                    android:id="@+id/row_q2"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_2_feeling_down_depressed_or_hopeless"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <include
+                    android:id="@+id/layout_a2"
+                    layout="@layout/layout_answers" />
+
+                <TableRow
+                    android:id="@+id/row_q3"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_3_trouble_falling_or_staying_asleep_or_sleeping_too_much"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <include
+                    android:id="@+id/layout_a3"
+                    layout="@layout/layout_answers" />
+
+                <TableRow
+                    android:id="@+id/row_q4"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_4_feeling_tired_or_having_little_energy"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <include
+                    android:id="@+id/layout_a4"
+                    layout="@layout/layout_answers" />
+
+                <TableRow
+                    android:id="@+id/row_q5"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_5_poor_appetite_or_overeating"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <include
+                    android:id="@+id/layout_a5"
+                    layout="@layout/layout_answers" />
+
+                <TableRow
+                    android:id="@+id/row_q6"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_6_feeling_bad_about_yourself_or_that_you_are_a_failure_or_have_let_yourself_or_your_family_down"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <include
+                    android:id="@+id/layout_a6"
+                    layout="@layout/layout_answers" />
+
+                <TableRow
+                    android:id="@+id/row_q7"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_7_trouble_concentrating_on_things_such_as_reading_the_newspaper_or_watching_television"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <include
+                    android:id="@+id/layout_a7"
+                    layout="@layout/layout_answers" />
+
+                <TableRow
+                    android:id="@+id/row_q8"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_8_moving_or_speaking_so_slowly_that_other_people_could_have_noticed_or_the_opposite_being_so_figety_or_restless_that_you_have_been_moving_around_a_lot_more_than_usual"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <include
+                    android:id="@+id/layout_a8"
+                    layout="@layout/layout_answers" />
+
+                <TableRow
+                    android:id="@+id/row_q9"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_9_thoughts_that_you_would_be_better_off_dead_or_of_hurting_yourself"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <include
+                    android:id="@+id/layout_a9"
+                    layout="@layout/layout_answers" />
+
+                <TableRow
+                    android:id="@+id/row_q10"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_q10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_10_if_you_checked_off_any_problems_how_difficult_have_these_problems_made_it_for_you_to_do_your_work_take_care_of_things_at_home_or_get_along_with_other_people"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <TableRow android:id="@+id/row_a10">
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radio_10_naa"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/not_difficult_at_all" />
+
+                        <RadioButton
+                            android:id="@+id/radio_10_sd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/somewhat_difficult" />
+
+                        <RadioButton
+                            android:id="@+id/radio_10_mthtd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/very_difficult" />
+
+                        <RadioButton
+                            android:id="@+id/radio_10_ned"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/extremely_difficult" />
+                    </RadioGroup>
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

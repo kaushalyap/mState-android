@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.mstate.R
 import com.example.mstate.databinding.FragmentQuestionnaireListBinding
 
 class QuestionnaireListFragment : Fragment() {
@@ -21,14 +23,13 @@ class QuestionnaireListFragment : Fragment() {
         return binding.root
     }
 
-    fun init() {
+    private fun init() {
         binding.btnPhq.setOnClickListener {
-
+            findNavController().navigate(R.id.action_questionnaire_to_phq)
         }
         binding.btnEpds.setOnClickListener {
-
+            findNavController().navigate(R.id.action_questionnaire_to_epds)
         }
-
     }
 
     override fun onDestroyView() {
