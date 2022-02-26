@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/_for"
+        android:layout_marginBottom="10dp"
         android:textSize="20sp" />
 
     <Button
@@ -26,7 +27,7 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="6dp"
+        android:padding="15dp"
         android:text="@string/anyone"
         android:textAllCaps="false"
         android:textColor="#808080"
@@ -38,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="@string/mothers_with_newborns"
+        android:text="@string/pregnant_mothers_and_mothers_with_newborns"
         android:textAllCaps="false"
         android:textColor="#808080"
         android:textSize="24sp" />
