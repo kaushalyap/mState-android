@@ -93,5 +93,7 @@
     <string name="_10_the_thought_of_harming_myself_has_occurred_to_me">10. The thought of harming myself has occurred to me</string>
     <string name="sometimes">Sometimes</string>
     <string name="never">Never</string>
-    <string name="_4_feeling_tired_or_having_little_energy">4. Feeling tired or having little energy</string>
+    <string name="submit">Submit</string>
+    <string name="pick_your_questionnaire">Pick your questionnaire</string>
+    <string name="_for">For</string>
 </resources>

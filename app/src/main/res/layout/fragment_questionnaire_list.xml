@@ -7,13 +7,27 @@
     android:orientation="vertical"
     tools:context=".ui.fragments.QuestionnaireListFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:text="@string/pick_your_questionnaire"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/_for"
+        android:textSize="20sp" />
+
     <Button
         android:id="@+id/btnPhq"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="6dp"
-        android:text="@string/personal_health_questionnaire_depression_scale_phq9"
+        android:text="Anyone"
         android:textAllCaps="false"
         android:textColor="#808080"
         android:textSize="24sp" />
@@ -24,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="@string/edinburgh_postnatal_depression_scale_epds"
+        android:text="Mothers with newborns"
         android:textAllCaps="false"
         android:textColor="#808080"
         android:textSize="24sp" />
