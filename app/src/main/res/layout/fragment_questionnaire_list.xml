@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="6dp"
-        android:text="Anyone"
+        android:text="@string/anyone"
         android:textAllCaps="false"
         android:textColor="#808080"
         android:textSize="24sp" />
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="Mothers with newborns"
+        android:text="@string/mothers_with_newborns"
         android:textAllCaps="false"
         android:textColor="#808080"
         android:textSize="24sp" />
