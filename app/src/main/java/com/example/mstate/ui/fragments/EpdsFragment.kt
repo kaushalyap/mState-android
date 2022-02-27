@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mstate.R
 import com.example.mstate.adapters.EpdsAdapter
@@ -17,6 +18,7 @@ class EpdsFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: EpdsAdapter
+    private var items: Array<QuestionItem> = emptyArray()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +33,7 @@ class EpdsFragment : Fragment() {
     private fun init() {
         linearLayoutManager = LinearLayoutManager(context)
         binding.recyclerViewEPDS.layoutManager = linearLayoutManager
-        val items: Array<QuestionItem> = arrayOf(
+        items = arrayOf(
             QuestionItem(
                 resources.getString(R.string._1),
                 resources.getString(R.string._1_i_have_been_able_to_laugh_and_see_the_funny_side_of_things),
@@ -39,6 +41,7 @@ class EpdsFragment : Fragment() {
                 resources.getString(R.string.not_quite_so_much_now),
                 resources.getString(R.string.definitely_not_so_much_now),
                 resources.getString(R.string.not_at_all),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -48,6 +51,7 @@ class EpdsFragment : Fragment() {
                 resources.getString(R.string.rather_less_than_i_used_to),
                 resources.getString(R.string.definitely_less_than_i_used_to),
                 resources.getString(R.string.hardly_at_all),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -57,6 +61,7 @@ class EpdsFragment : Fragment() {
                 resources.getString(R.string.yes_some_of_the_time),
                 resources.getString(R.string.not_very_often),
                 resources.getString(R.string.no_never),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -66,6 +71,7 @@ class EpdsFragment : Fragment() {
                 resources.getString(R.string.hardly_ever),
                 resources.getString(R.string.yes_sometimes),
                 resources.getString(R.string.yes_very_often),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -75,6 +81,7 @@ class EpdsFragment : Fragment() {
                 resources.getString(R.string.yes_sometimes),
                 resources.getString(R.string.no_not_much),
                 resources.getString(R.string.no_not_at_all),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -84,6 +91,7 @@ class EpdsFragment : Fragment() {
                 resources.getString(R.string.yes_sometimes_i_haven_t_been_coping_as_well_as_usual),
                 resources.getString(R.string.no_most_of_the_time_i_have_coped_quite_well),
                 resources.getString(R.string.no_i_have_been_coping_as_well_as_ever),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -93,6 +101,7 @@ class EpdsFragment : Fragment() {
                 resources.getString(R.string.yes_sometimes),
                 resources.getString(R.string.not_very_often),
                 resources.getString(R.string.no_not_at_all),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -102,6 +111,7 @@ class EpdsFragment : Fragment() {
                 resources.getString(R.string.yes_quite_often),
                 resources.getString(R.string.not_very_often),
                 resources.getString(R.string.no_not_at_all),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -111,6 +121,7 @@ class EpdsFragment : Fragment() {
                 resources.getString(R.string.yes_quite_often),
                 resources.getString(R.string.only_occasionally),
                 resources.getString(R.string.no_never),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -120,14 +131,32 @@ class EpdsFragment : Fragment() {
                 resources.getString(R.string.sometimes),
                 resources.getString(R.string.hardly_ever),
                 resources.getString(R.string.never),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             )
         )
 
         adapter = EpdsAdapter(items)
+
         binding.recyclerViewEPDS.adapter = adapter
+        binding.btnSubmit.setOnClickListener {
+            if (isValid()) {
+                findNavController().navigate(R.id.action_epds_to_result)
+            }
+        }
     }
 
+    private fun isValid(): Boolean {
+        val unmarkedItems = items.filter { it.selected < 0 }
+
+        return if (unmarkedItems.isEmpty()) {
+            binding.lbError.visibility = View.INVISIBLE
+            true
+        } else {
+            binding.lbError.visibility = View.VISIBLE
+            false
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

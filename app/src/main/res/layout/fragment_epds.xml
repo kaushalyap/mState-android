@@ -55,11 +55,14 @@
                 android:layout_marginTop="20dp" />
 
             <TextView
-                android:id="@+id/textView30"
-                android:layout_width="wrap_content"
+                android:id="@+id/lbError"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/please_mark_all_of_the_questions"
                 android:textSize="16sp"
+                android:layout_marginTop="20dp"
+                android:textColor="@android:color/holo_red_light"
+                android:visibility="invisible"
                 app:layout_constraintTop_toBottomOf="@+id/rvEPDS" />
 
             <Button
@@ -67,6 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/submit"
+                android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@+id/textView30"
                 tools:layout_editor_absoluteX="0dp" />
         </LinearLayout>

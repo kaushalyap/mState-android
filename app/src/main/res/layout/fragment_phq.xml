@@ -45,6 +45,16 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="20dp" />
 
+            <TextView
+                android:id="@+id/lbError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/please_mark_all_of_the_questions"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="16sp"
+                android:visibility="invisible" />
+
             <Button
                 android:id="@+id/btnSubmit"
                 android:layout_width="match_parent"

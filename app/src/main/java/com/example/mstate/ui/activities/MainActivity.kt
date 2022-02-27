@@ -116,6 +116,10 @@ class MainActivity : AppCompatActivity() {
             R.id.settings -> navController.navigate(R.id.action_main_to_settings)
             R.id.disclaimer -> navController.navigate(R.id.action_main_to_disclaimer)
             R.id.about -> navController.navigate(R.id.action_main_to_about)
+            R.id.signOut -> {
+                Firebase.auth.signOut()
+                navController.navigate(R.id.action_global_signIn)
+            }
         }
         return true
     }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mstate.R
 import com.example.mstate.adapters.Phd9Adapter
@@ -17,6 +18,7 @@ class PhqFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: Phd9Adapter
+    private var items: Array<QuestionItem> = emptyArray()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +32,7 @@ class PhqFragment : Fragment() {
     private fun init() {
         linearLayoutManager = LinearLayoutManager(context)
         binding.recyclerViewPhq9.layoutManager = linearLayoutManager
-        val items: Array<QuestionItem> = arrayOf(
+        items = arrayOf(
             QuestionItem(
                 resources.getString(R.string._1),
                 resources.getString(R.string._1_little_interest_or_pleasure_in_doing_things),
@@ -38,6 +40,7 @@ class PhqFragment : Fragment() {
                 resources.getString(R.string.several_days),
                 resources.getString(R.string.more_than_half_the_days),
                 resources.getString(R.string.nearly_every_day),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -47,6 +50,7 @@ class PhqFragment : Fragment() {
                 resources.getString(R.string.several_days),
                 resources.getString(R.string.more_than_half_the_days),
                 resources.getString(R.string.nearly_every_day),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -56,6 +60,7 @@ class PhqFragment : Fragment() {
                 resources.getString(R.string.several_days),
                 resources.getString(R.string.more_than_half_the_days),
                 resources.getString(R.string.nearly_every_day),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -65,6 +70,7 @@ class PhqFragment : Fragment() {
                 resources.getString(R.string.several_days),
                 resources.getString(R.string.more_than_half_the_days),
                 resources.getString(R.string.nearly_every_day),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -74,6 +80,7 @@ class PhqFragment : Fragment() {
                 resources.getString(R.string.several_days),
                 resources.getString(R.string.more_than_half_the_days),
                 resources.getString(R.string.nearly_every_day),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -83,6 +90,7 @@ class PhqFragment : Fragment() {
                 resources.getString(R.string.several_days),
                 resources.getString(R.string.more_than_half_the_days),
                 resources.getString(R.string.nearly_every_day),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -92,6 +100,7 @@ class PhqFragment : Fragment() {
                 resources.getString(R.string.several_days),
                 resources.getString(R.string.more_than_half_the_days),
                 resources.getString(R.string.nearly_every_day),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -101,6 +110,7 @@ class PhqFragment : Fragment() {
                 resources.getString(R.string.several_days),
                 resources.getString(R.string.more_than_half_the_days),
                 resources.getString(R.string.nearly_every_day),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
             QuestionItem(
@@ -110,11 +120,34 @@ class PhqFragment : Fragment() {
                 resources.getString(R.string.several_days),
                 resources.getString(R.string.more_than_half_the_days),
                 resources.getString(R.string.nearly_every_day),
+                -1,
                 resources.getString(R.string.please_select_a_choice)
             ),
         )
+
         adapter = Phd9Adapter(items)
         binding.recyclerViewPhq9.adapter = adapter
+        binding.btnSubmit.setOnClickListener {
+            if (isValid()) {
+                findNavController().navigate(R.id.action_phq_to_result)
+            }
+        }
+    }
+
+    private fun calculateScore() {
+        TODO("Not yet implemented")
+    }
+
+    private fun isValid(): Boolean {
+        val unmarkedItems = items.filter { it.selected < 0 }
+
+        return if (unmarkedItems.isEmpty()) {
+            binding.lbError.visibility = View.INVISIBLE
+            true
+        } else {
+            binding.lbError.visibility = View.VISIBLE
+            false
+        }
     }
 
     override fun onDestroyView() {
