@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mstate.R
 import com.example.mstate.adapters.Phd9Adapter
 import com.example.mstate.databinding.FragmentPhqBinding
+import com.example.mstate.models.Phq9Scoring
 import com.example.mstate.models.QuestionItem
 
-class PhqFragment : Fragment() {
+class Phq9Fragment : Fragment() {
 
     private var _binding: FragmentPhqBinding? = null
     private val binding get() = _binding!!
@@ -30,6 +31,21 @@ class PhqFragment : Fragment() {
     }
 
     private fun init() {
+        setupRecyclerView()
+
+        binding.btnSubmit.setOnClickListener {
+            if (isValid()) {
+                val diagnosis = calculateScore()
+                if (diagnosis != "Undefined" && diagnosis != "Not Depressed") {
+                    val action = Phq9FragmentDirections.actionPhqToDepressed(diagnosis, "PHQ9")
+                    findNavController().navigate(action)
+                } else
+                    findNavController().navigate(R.id.action_phq_to_normal)
+            }
+        }
+    }
+
+    private fun setupRecyclerView() {
         linearLayoutManager = LinearLayoutManager(context)
         binding.recyclerViewPhq9.layoutManager = linearLayoutManager
         items = arrayOf(
@@ -124,18 +140,12 @@ class PhqFragment : Fragment() {
                 resources.getString(R.string.please_select_a_choice)
             ),
         )
-
         adapter = Phd9Adapter(items)
         binding.recyclerViewPhq9.adapter = adapter
-        binding.btnSubmit.setOnClickListener {
-            if (isValid()) {
-                findNavController().navigate(R.id.action_phq_to_result)
-            }
-        }
     }
 
-    private fun calculateScore() {
-        TODO("Not yet implemented")
+    private fun calculateScore(): String {
+        return Phq9Scoring(items).diagnosis()
     }
 
     private fun isValid(): Boolean {

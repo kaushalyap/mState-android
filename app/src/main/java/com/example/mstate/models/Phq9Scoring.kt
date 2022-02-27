@@ -1,12 +1,14 @@
 package com.example.mstate.models
 
-class PHQ9Scoring(var answers: Array<Int>) {
+class Phq9Scoring(var answers: Array<QuestionItem>) {
     private var score: Int = 0
-    private val sociallyImpaired = answers[9] > 1
-    private val disorder = (answers[0] > 1 || answers[1] > 1)
+    private val sociallyImpaired = answers[8].selected > 1
+    private val disorder = (answers[0].selected > 1 || answers[1].selected > 1)
 
-    fun calculateScore(): DepressionLevels {
-        score = answers.sum()
+    fun diagnosis(): String {
+        for (answer in answers)
+            score += answer.selected
+
         var level = DepressionLevels.Undefined
         if (score <= 1)
             level = DepressionLevels.Not
@@ -24,6 +26,6 @@ class PHQ9Scoring(var answers: Array<Int>) {
             level = DepressionLevels.ModeratelySevere
         else if (score <= 27 && disorder && sociallyImpaired)
             level = DepressionLevels.Severe
-        return level
+        return level.disorderName
     }
 }

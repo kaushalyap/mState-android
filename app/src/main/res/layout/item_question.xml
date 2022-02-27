@@ -21,6 +21,7 @@
         android:layout_marginStart="5dp"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/lbQuestionNo"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/_1_i_have_been_able_to_laugh_and_see_the_funny_side_of_things" />
 

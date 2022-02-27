@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="20dp"
     android:orientation="vertical"
-    tools:context=".ui.fragments.PhqFragment">
+    tools:context=".ui.fragments.Phq9Fragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

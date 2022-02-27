@@ -110,4 +110,13 @@
     <string name="please_mark_all_of_the_questions">Please mark all of the questions!</string>
     <string name="pregnant_mothers_and_mothers_with_newborns">Pregnant Mothers and Mothers with Newborns</string>
     <string name="sign_out">Sign Out</string>
+    <string name="diagnosis">Diagnosis</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="guidelines">Guidelines</string>
+    <string name="sad_face">Sad face</string>
+    <string name="okay">Okay</string>
+    <string name="hurray_you_do_not_have_any_level_of_depression_keep_up_the_good_work_n_nexercise_and_meditate_daily_to_have_for_a_healthy_brain_which_leads_to_a_healthy_mind">Hurray! You do not have any level of depression. Keep up the good work!\n\nExercise and meditate daily to have for a healthy brain which leads to a healthy mind!</string>
+    <string name="i_ll_keep_these_in_mind">I\'ll Keep these in mind</string>
+    <string name="read_guidelines">Read Guidelines</string>
 </resources>

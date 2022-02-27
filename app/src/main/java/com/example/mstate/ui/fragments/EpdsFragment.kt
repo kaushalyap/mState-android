@@ -31,6 +31,21 @@ class EpdsFragment : Fragment() {
 
 
     private fun init() {
+        setupRecyclerView()
+
+        binding.btnSubmit.setOnClickListener {
+            if (isValid()) {
+                val diagnosis = calculateScore()
+                if (diagnosis != "Not") {
+                    val action = EpdsFragmentDirections.actionEpdsToDepressed(diagnosis, "EPDS")
+                    findNavController().navigate(action)
+                } else
+                    findNavController().navigate(R.id.action_epds_to_normal)
+            }
+        }
+    }
+
+    private fun setupRecyclerView() {
         linearLayoutManager = LinearLayoutManager(context)
         binding.recyclerViewEPDS.layoutManager = linearLayoutManager
         items = arrayOf(
@@ -135,15 +150,12 @@ class EpdsFragment : Fragment() {
                 resources.getString(R.string.please_select_a_choice)
             )
         )
-
         adapter = EpdsAdapter(items)
-
         binding.recyclerViewEPDS.adapter = adapter
-        binding.btnSubmit.setOnClickListener {
-            if (isValid()) {
-                findNavController().navigate(R.id.action_epds_to_result)
-            }
-        }
+    }
+
+    private fun calculateScore(): String {
+        return ""
     }
 
     private fun isValid(): Boolean {

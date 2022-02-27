@@ -64,10 +64,23 @@
         android:label="fragment_disclaimer"
         tools:layout="@layout/fragment_disclaimer" />
     <fragment
-        android:id="@+id/resultFragment"
-        android:name="com.example.mstate.ui.fragments.ResultFragment"
+        android:id="@+id/depressedFragment"
+        android:name="com.example.mstate.ui.fragments.DepressedFragment"
         android:label="fragment_result"
-        tools:layout="@layout/fragment_result" />
+        tools:layout="@layout/fragment_depressed">
+        <argument
+            android:name="result"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="testType"
+            android:defaultValue=""
+            app:argType="string" />
+        <action
+            android:id="@+id/action_depressed_to_guidelines"
+            app:destination="@id/guidelinesFragment"
+            app:popUpTo="@id/questionnaireFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.mstate.ui.fragments.SettingsFragment"
@@ -82,18 +95,36 @@
         android:label="fragment_epds"
         tools:layout="@layout/fragment_epds">
         <action
-            android:id="@+id/action_epds_to_result"
-            app:destination="@id/resultFragment"
+            android:id="@+id/action_epds_to_depressed"
+            app:destination="@id/depressedFragment"
+            app:popUpTo="@id/questionnaireFragment" />
+        <action
+            android:id="@+id/action_epds_to_normal"
+            app:destination="@id/normalFragment"
             app:popUpTo="@id/questionnaireFragment" />
     </fragment>
     <fragment
         android:id="@+id/phqFragment"
-        android:name="com.example.mstate.ui.fragments.PhqFragment"
+        android:name="com.example.mstate.ui.fragments.Phq9Fragment"
         android:label="fragment_phq"
         tools:layout="@layout/fragment_phq">
+
         <action
-            android:id="@+id/action_phq_to_result"
-            app:destination="@id/resultFragment"
+            android:id="@+id/action_phq_to_depressed"
+            app:destination="@id/depressedFragment"
+            app:popUpTo="@id/questionnaireFragment" />
+        <action
+            android:id="@+id/action_phq_to_normal"
+            app:destination="@id/normalFragment"
             app:popUpTo="@id/questionnaireFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/guidelinesFragment"
+        android:name="com.example.mstate.ui.fragments.GuidelinesFragment"
+        android:label="fragment_guidelines"
+        tools:layout="@layout/fragment_guidelines" />
+    <fragment
+        android:id="@+id/normalFragment"
+        android:name="com.example.mstate.ui.fragments.NormalFragment"
+        android:label="NormalFragment" />
 </navigation>
