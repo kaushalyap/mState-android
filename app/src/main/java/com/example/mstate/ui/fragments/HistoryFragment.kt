@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mstate.R
 import com.example.mstate.adapters.HistoryAdapter
 import com.example.mstate.databinding.FragmentHistoryBinding
 import com.example.mstate.models.HistoryItem
@@ -37,8 +36,8 @@ class HistoryFragment : Fragment() {
                 "12 of Jan 2022",
                 "2.55 PM",
                 QuestionnaireType.EPDS.qType,
-                R.drawable.ic_about_24,
-                2.0f
+                17,
+                "Not Depressed but have suicidal thoughts which can be due to some bereavement"
             )
         )
 

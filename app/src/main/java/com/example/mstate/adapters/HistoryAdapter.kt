@@ -3,7 +3,6 @@ package com.example.mstate.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mstate.R
@@ -15,16 +14,14 @@ class HistoryAdapter(private val dataSet: Array<HistoryItem>) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val lbDate: TextView
         val lbTime: TextView
-        val emoji: ImageView
         val lbType: TextView
-        val lbScore: TextView
+        val lbDiagnosis: TextView
 
         init {
             lbDate = view.findViewById(R.id.lbDate)
             lbTime = view.findViewById(R.id.lbTime)
-            emoji = view.findViewById(R.id.imgEmoji)
             lbType = view.findViewById(R.id.lbQuestionnaireType)
-            lbScore = view.findViewById(R.id.lbScore)
+            lbDiagnosis = view.findViewById(R.id.lbDiagnosis)
         }
     }
 
@@ -39,9 +36,8 @@ class HistoryAdapter(private val dataSet: Array<HistoryItem>) :
 
         viewHolder.lbDate.text = dataSet[position].date
         viewHolder.lbTime.text = dataSet[position].time
-        dataSet[position].imageResource.let { viewHolder.emoji.setImageResource(it) }
         viewHolder.lbType.text = dataSet[position].questionnaireType
-        viewHolder.lbScore.text = dataSet[position].score.toString()
+        viewHolder.lbDiagnosis.text = dataSet[position].diagnosis
     }
 
     override fun getItemCount(): Int = dataSet.size

@@ -1,6 +1,6 @@
 package com.example.mstate.models
 
-class QuestionItem(
+data class QuestionItem(
     val questionNo: String,
     val question: String,
     val answer1: String,

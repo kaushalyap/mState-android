@@ -20,36 +20,25 @@
         android:id="@+id/lbTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/lbDate"
-        app:layout_constraintTop_toBottomOf="@+id/lbDate"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/lbDate"
+        app:layout_constraintStart_toEndOf="@+id/lbDate"
         tools:text="2.55 PM" />
-
-    <ImageView
-        android:id="@+id/imgEmoji"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="20dp"
-        android:background="@color/teal_200"
-        app:layout_constraintBottom_toBottomOf="@+id/lbScore"
-        app:layout_constraintEnd_toStartOf="@+id/lbQuestionnaireType"
-        app:layout_constraintTop_toTopOf="@+id/lbQuestionnaireType" />
 
     <TextView
         android:id="@+id/lbQuestionnaireType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/lbScore"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="EPDS" />
 
     <TextView
-        android:id="@+id/lbScore"
-        android:layout_width="wrap_content"
+        android:id="@+id/lbDiagnosis"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbQuestionnaireType"
-        tools:text="8.0" />
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/lbDate"
+        app:layout_constraintTop_toBottomOf="@+id/lbDate"
+        tools:text="Not Depressed but have suicidal thoughts which can be due to some bereavement" />
 </androidx.constraintlayout.widget.ConstraintLayout>
