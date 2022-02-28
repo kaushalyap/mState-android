@@ -1,6 +1,6 @@
 package com.example.mstate.models
 
-enum class DepressionLevels(val disorderName: String, val score: Int) {
+enum class Phq9DepressionLevels(val disorderName: String, val score: Int) {
     Undefined("Undefined", -1),
     Not("Not Depressed", 0),
     Other("Some other Depressive Disorder", 1),

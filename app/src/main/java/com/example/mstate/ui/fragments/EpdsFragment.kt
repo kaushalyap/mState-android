@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mstate.R
 import com.example.mstate.adapters.EpdsAdapter
 import com.example.mstate.databinding.FragmentEpdsBinding
+import com.example.mstate.models.EpdsDepressionLevels
+import com.example.mstate.models.EpdsScoring
 import com.example.mstate.models.QuestionItem
+import com.example.mstate.models.QuestionnaireType
 
 class EpdsFragment : Fragment() {
 
@@ -36,11 +39,15 @@ class EpdsFragment : Fragment() {
         binding.btnSubmit.setOnClickListener {
             if (isValid()) {
                 val diagnosis = calculateScore()
-                if (diagnosis != "Not") {
-                    val action = EpdsFragmentDirections.actionEpdsToDepressed(diagnosis, "EPDS")
-                    findNavController().navigate(action)
-                } else
+                if (diagnosis == EpdsDepressionLevels.Undefined.diagnosis || diagnosis == EpdsDepressionLevels.Not.diagnosis)
                     findNavController().navigate(R.id.action_epds_to_normal)
+                else {
+                    val action = EpdsFragmentDirections.actionEpdsToDepressed(
+                        diagnosis,
+                        QuestionnaireType.EPDS.name
+                    )
+                    findNavController().navigate(action)
+                }
             }
         }
     }
@@ -155,7 +162,7 @@ class EpdsFragment : Fragment() {
     }
 
     private fun calculateScore(): String {
-        return ""
+        return EpdsScoring(items).diagnosis()
     }
 
     private fun isValid(): Boolean {

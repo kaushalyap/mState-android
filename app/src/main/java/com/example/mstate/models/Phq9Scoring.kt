@@ -9,23 +9,23 @@ class Phq9Scoring(var answers: Array<QuestionItem>) {
         for (answer in answers)
             score += answer.selected
 
-        var level = DepressionLevels.Undefined
-        if (score <= 1)
-            level = DepressionLevels.Not
-        else if (score <= 2 && disorder && sociallyImpaired)
-            level = DepressionLevels.Other
-        else if (score <= 4 && sociallyImpaired)
-            level = DepressionLevels.Minimal
+        var level = Phq9DepressionLevels.Undefined
+        if (score in 0..1)
+            level = Phq9DepressionLevels.Not
+        else if (score == 2 && disorder && sociallyImpaired)
+            level = Phq9DepressionLevels.Other
+        else if (score in 3..4 && sociallyImpaired)
+            level = Phq9DepressionLevels.Minimal
 
         /* Major Depressive Disorders */
-        else if (score <= 9 && disorder && sociallyImpaired)
-            level = DepressionLevels.Mild
-        else if (score <= 14 && disorder && sociallyImpaired)
-            level = DepressionLevels.Moderate
-        else if (score <= 19 && disorder && sociallyImpaired)
-            level = DepressionLevels.ModeratelySevere
-        else if (score <= 27 && disorder && sociallyImpaired)
-            level = DepressionLevels.Severe
+        else if (score in 5..9 && disorder && sociallyImpaired)
+            level = Phq9DepressionLevels.Mild
+        else if (score in 10..14 && disorder && sociallyImpaired)
+            level = Phq9DepressionLevels.Moderate
+        else if (score in 15..19 && disorder && sociallyImpaired)
+            level = Phq9DepressionLevels.ModeratelySevere
+        else if (score in 20..27 && disorder && sociallyImpaired)
+            level = Phq9DepressionLevels.Severe
         return level.disorderName
     }
 }

@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mstate.R
 import com.example.mstate.adapters.Phd9Adapter
 import com.example.mstate.databinding.FragmentPhqBinding
+import com.example.mstate.models.Phq9DepressionLevels
 import com.example.mstate.models.Phq9Scoring
 import com.example.mstate.models.QuestionItem
+import com.example.mstate.models.QuestionnaireType
 
 class Phq9Fragment : Fragment() {
 
@@ -36,8 +38,11 @@ class Phq9Fragment : Fragment() {
         binding.btnSubmit.setOnClickListener {
             if (isValid()) {
                 val diagnosis = calculateScore()
-                if (diagnosis != "Undefined" && diagnosis != "Not Depressed") {
-                    val action = Phq9FragmentDirections.actionPhqToDepressed(diagnosis, "PHQ9")
+                if (diagnosis != Phq9DepressionLevels.Undefined.disorderName && diagnosis != Phq9DepressionLevels.Not.disorderName) {
+                    val action = Phq9FragmentDirections.actionPhqToDepressed(
+                        diagnosis,
+                        QuestionnaireType.PHQ.name
+                    )
                     findNavController().navigate(action)
                 } else
                     findNavController().navigate(R.id.action_phq_to_normal)
