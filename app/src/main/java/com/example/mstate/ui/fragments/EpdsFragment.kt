@@ -1,5 +1,6 @@
 package com.example.mstate.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mstate.R
 import com.example.mstate.adapters.EpdsAdapter
 import com.example.mstate.databinding.FragmentEpdsBinding
-import com.example.mstate.models.EpdsDepressionLevels
-import com.example.mstate.models.EpdsScoring
-import com.example.mstate.models.QuestionItem
-import com.example.mstate.models.QuestionnaireType
+import com.example.mstate.models.*
+import com.example.mstate.services.FirestoreService
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EpdsFragment : Fragment() {
 
@@ -22,6 +23,8 @@ class EpdsFragment : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: EpdsAdapter
     private var items: Array<QuestionItem> = emptyArray()
+    private lateinit var firestoreService: FirestoreService
+    private lateinit var epdsScoring: EpdsScoring
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +53,22 @@ class EpdsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun saveTestResult() {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val docRef = sharedPref?.getString(getString(R.string.pref_user_doc_ref), null)
+        val dateTime: String =
+            SimpleDateFormat("dd MMMM yyyy,h:mm a", Locale.getDefault()).format(Date())
+        val splitDateTime = dateTime.split(',')
+        val historyItem = HistoryItem(
+            splitDateTime[0],
+            splitDateTime[1],
+            QuestionnaireType.EPDS.name,
+            epdsScoring.getScore()
+        )
+        firestoreService = FirestoreService()
+        firestoreService.addHistoryItem(docRef!!, historyItem)
     }
 
     private fun setupRecyclerView() {

@@ -14,6 +14,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.mstate.R
 import com.example.mstate.databinding.ActivityMainBinding
+import com.example.mstate.models.User
+import com.example.mstate.services.FirestoreService
+import com.example.mstate.services.MyCallback
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -24,6 +27,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import permissions.dispatcher.PermissionRequest
 
+
 private const val TAG = "MainActivity"
 private const val RC_SIGN_IN = 9001
 
@@ -33,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
+    private lateinit var firestoreService: FirestoreService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -141,6 +146,10 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
                 firebaseAuthWithGoogle(account.idToken!!)
 
+                val user = User(account.displayName!!, account.email!!, null)
+                addUser(user)
+
+
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e)
@@ -148,6 +157,20 @@ class MainActivity : AppCompatActivity() {
                     .show()
             }
         }
+    }
+
+    private fun addUser(user: User) {
+        firestoreService = FirestoreService()
+        firestoreService.addUser(object : MyCallback {
+            override fun onCallback(docRef: String) {
+                Log.d(TAG, "userDocRef : $docRef")
+                val sharedPref = getPreferences(MODE_PRIVATE)
+                with(sharedPref.edit()) {
+                    putString(getString(R.string.pref_user_doc_ref), docRef)
+                    apply()
+                }
+            }
+        }, user)
     }
 
     internal fun showFabBottomAppBar() {

@@ -1,5 +1,6 @@
 package com.example.mstate.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mstate.R
 import com.example.mstate.adapters.Phd9Adapter
 import com.example.mstate.databinding.FragmentPhqBinding
-import com.example.mstate.models.Phq9DepressionLevels
-import com.example.mstate.models.Phq9Scoring
-import com.example.mstate.models.QuestionItem
-import com.example.mstate.models.QuestionnaireType
+import com.example.mstate.models.*
+import com.example.mstate.services.FirestoreService
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Phq9Fragment : Fragment() {
 
@@ -22,6 +23,8 @@ class Phq9Fragment : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: Phd9Adapter
     private var items: Array<QuestionItem> = emptyArray()
+    private lateinit var firestoreService: FirestoreService
+    private lateinit var phq9Scoring: Phq9Scoring
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,11 +46,30 @@ class Phq9Fragment : Fragment() {
                         diagnosis,
                         QuestionnaireType.PHQ.name
                     )
+
+                    saveTestResult()
+
                     findNavController().navigate(action)
                 } else
                     findNavController().navigate(R.id.action_phq_to_normal)
             }
         }
+    }
+
+    private fun saveTestResult() {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val docRef = sharedPref?.getString(getString(R.string.pref_user_doc_ref), null)
+        val dateTime: String =
+            SimpleDateFormat("dd MMMM yyyy,h:mm a", Locale.getDefault()).format(Date())
+        val splitDateTime = dateTime.split(',')
+        val historyItem = HistoryItem(
+            splitDateTime[0],
+            splitDateTime[1],
+            QuestionnaireType.PHQ.name,
+            phq9Scoring.getScore()
+        )
+        firestoreService = FirestoreService()
+        firestoreService.addHistoryItem(docRef!!, historyItem)
     }
 
     private fun setupRecyclerView() {
@@ -150,7 +172,8 @@ class Phq9Fragment : Fragment() {
     }
 
     private fun calculateScore(): String {
-        return Phq9Scoring(items).diagnosis()
+        phq9Scoring = Phq9Scoring(items)
+        return phq9Scoring.diagnosis()
     }
 
     private fun isValid(): Boolean {

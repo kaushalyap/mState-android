@@ -30,4 +30,6 @@ class EpdsScoring(var answers: Array<QuestionItem>) {
             EpdsDepressionLevels.Severe.diagnosis
         else EpdsDepressionLevels.Undefined.diagnosis
     }
+
+    fun getScore(): Int = score
 }

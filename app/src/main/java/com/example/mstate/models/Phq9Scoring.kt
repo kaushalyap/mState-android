@@ -28,4 +28,6 @@ class Phq9Scoring(var answers: Array<QuestionItem>) {
             level = Phq9DepressionLevels.Severe
         return level.disorderName
     }
+
+    fun getScore(): Int = score
 }

@@ -8,14 +8,12 @@
             app:title="Emergency Contact" />
 
         <SwitchPreferenceCompat
-            app:defaultValue="false"
             app:icon="@drawable/ic_sms_24"
             app:key="@string/pref_sms"
             app:summary="@string/pref_sms_summary"
             app:title="SMS" />
 
         <SwitchPreferenceCompat
-            app:defaultValue="false"
             app:icon="@drawable/ic_call_24"
             app:key="@string/pref_call"
             app:summary="@string/pref_call_summary"

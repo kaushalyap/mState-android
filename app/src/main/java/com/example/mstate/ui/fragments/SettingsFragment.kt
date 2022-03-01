@@ -7,24 +7,29 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.example.mstate.R
+import com.example.mstate.models.Settings
+import com.example.mstate.services.FirestoreService
 import com.example.mstate.ui.activities.MainActivity
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.ktx.PermissionsRequester
 import permissions.dispatcher.ktx.constructPermissionsRequest
 
 const val CONTACT_PICKER_RESULT: Int = 1
-
+const val TAG = "SettingsFragment"
 class SettingsFragment : PreferenceFragmentCompat() {
 
     private lateinit var mainActivity: MainActivity
     private lateinit var prefEmergencyContact: Preference
+
     private lateinit var callPermissionsRequester: PermissionsRequester
     private lateinit var smsPermissionsRequester: PermissionsRequester
+    private lateinit var firestoreService: FirestoreService
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
@@ -68,25 +73,56 @@ class SettingsFragment : PreferenceFragmentCompat() {
             startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT)
             true
         }
-
     }
 
     private fun setSharedPreferenceChangeListeners() {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val listener =
             SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
                 when {
                     key.equals(getString(R.string.pref_sms)) -> {
-                        if (prefs.getBoolean(getString(R.string.pref_sms), false))
+                        if (prefs.getBoolean(getString(R.string.pref_sms), false)) {
                             smsPermissionsRequester.launch()
+                            with(sharedPref.edit()) {
+                                putBoolean(getString(R.string.pref_sms), true)
+                                apply()
+                            }
+                        }
                     }
                     key.equals(getString(R.string.pref_call)) -> {
-                        if (prefs.getBoolean(getString(R.string.pref_call), false))
+                        if (prefs.getBoolean(getString(R.string.pref_call), false)) {
                             callPermissionsRequester.launch()
+                            with(sharedPref.edit()) {
+                                putBoolean(getString(R.string.pref_call), true)
+                                apply()
+                            }
+                        }
                     }
                 }
             }
         preferences.registerOnSharedPreferenceChangeListener(listener)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        saveSettingsOnExit()
+    }
+
+    private fun saveSettingsOnExit() {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val docRef = sharedPref.getString(getString(R.string.pref_user_doc_ref), null)
+        val eContact = sharedPref.getString(
+            getString(R.string.pref_emergency_contact),
+            "Who to contact when depressed"
+        )
+        val callOn = sharedPref.getBoolean(getString(R.string.pref_call), false)
+        val smsOn = sharedPref.getBoolean(getString(R.string.pref_sms), false)
+
+        Log.d(TAG, "callOn : $callOn, smsOn : $smsOn")
+        val settings = Settings(smsOn, callOn, eContact!!)
+        firestoreService = FirestoreService()
+        firestoreService.updateSettings(docRef!!, settings)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -110,7 +146,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     putString(getString(R.string.pref_emergency_contact), number)
                     apply()
                 }
-
                 prefEmergencyContact.summaryProvider =
                     Preference.SummaryProvider<Preference> {
                         number

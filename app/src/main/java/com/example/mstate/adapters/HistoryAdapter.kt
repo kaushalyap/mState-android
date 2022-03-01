@@ -8,20 +8,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mstate.R
 import com.example.mstate.models.HistoryItem
 
-class HistoryAdapter(private val dataSet: Array<HistoryItem>) :
+class HistoryAdapter(private val dataSet: List<HistoryItem>) :
     RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val lbDate: TextView
         val lbTime: TextView
         val lbType: TextView
-        val lbDiagnosis: TextView
+        val lbScore: TextView
 
         init {
             lbDate = view.findViewById(R.id.lbDate)
             lbTime = view.findViewById(R.id.lbTime)
             lbType = view.findViewById(R.id.lbQuestionnaireType)
-            lbDiagnosis = view.findViewById(R.id.lbDiagnosis)
+            lbScore = view.findViewById(R.id.lbScore)
         }
     }
 
@@ -37,7 +37,7 @@ class HistoryAdapter(private val dataSet: Array<HistoryItem>) :
         viewHolder.lbDate.text = dataSet[position].date
         viewHolder.lbTime.text = dataSet[position].time
         viewHolder.lbType.text = dataSet[position].questionnaireType
-        viewHolder.lbDiagnosis.text = dataSet[position].diagnosis
+        viewHolder.lbScore.text = dataSet[position].score.toString()
     }
 
     override fun getItemCount(): Int = dataSet.size

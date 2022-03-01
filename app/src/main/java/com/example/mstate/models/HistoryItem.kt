@@ -5,5 +5,4 @@ data class HistoryItem(
     val time: String,
     val questionnaireType: String,
     val score: Int,
-    val diagnosis: String
 )
