@@ -1,6 +1,7 @@
 package com.example.mstate.ui.fragments
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -119,6 +120,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         saveSettingsOnExit()
     }
 
+    @SuppressLint("LogConditional")
     private fun saveSettingsOnExit() {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         val docRef = sharedPref.getString(getString(R.string.pref_user_doc_ref), null)

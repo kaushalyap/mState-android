@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth
 class HistoryFragment : Fragment() {
 
     private var _binding: FragmentHistoryBinding? = null
-    private val binding get() = _binding!!
+    internal val binding get() = _binding!!
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: HistoryAdapter
     private lateinit var firestoreService: FirestoreService

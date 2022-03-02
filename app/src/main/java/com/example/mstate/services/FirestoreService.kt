@@ -1,5 +1,6 @@
 package com.example.mstate.services
 
+import android.annotation.SuppressLint
 import android.util.Log
 import com.example.mstate.models.HistoryItem
 import com.example.mstate.models.Settings
@@ -8,15 +9,14 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 
-const val TAG: String = "FirebaseService"
-
+@SuppressLint("LogConditional")
 class FirestoreService {
 
     private val db = Firebase.firestore
 
     fun addUser(callback: UserCallback, user: User) {
-        var docRef: String? = null
-        var userExists = 0
+        var docRef: String
+        var userExists: Int
 
         db.collection("Users")
             .whereEqualTo("email", user.email).get()
@@ -24,7 +24,7 @@ class FirestoreService {
                 for (document in documents) {
                     docRef = document.id
                     userExists = if (docRef != null) 1 else 0
-                    callback.onCallback(docRef ?: return@addOnSuccessListener)
+                    callback.onCallback(docRef)
 
                     if (userExists == 0) {
                         db.collection("Users")
@@ -35,7 +35,6 @@ class FirestoreService {
                                     TAG,
                                     "DocumentSnapshot added with ID: ${documentReference.id}"
                                 )
-
                             }
                             .addOnFailureListener { e ->
                                 Log.w(TAG, "Error adding User document", e)
@@ -92,15 +91,15 @@ class FirestoreService {
         db.collection("Users").document(dRef).collection("History")
             .get()
             .addOnSuccessListener { result ->
-                val histories: MutableList<HistoryItem>? = mutableListOf()
+                val histories: MutableList<HistoryItem> = mutableListOf()
                 for (document in result) {
                     Log.d(TAG, "${document.id} => ${document.data}")
-                    histories?.add(
+                    histories.add(
                         HistoryItem(
                             document.getString("date").toString(),
                             document.getString("time").toString(),
                             document.getString("questionnaireType").toString(),
-                            document.getDouble("score")?.toInt()!!
+                            document.getDouble("score")?.toInt() ?: return@addOnSuccessListener
                         )
                     )
                     Log.d(TAG, "$histories")
@@ -111,5 +110,10 @@ class FirestoreService {
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting History documents.", exception)
             }
+    }
+
+    companion object {
+        const val TAG: String = "FirebaseService"
+
     }
 }

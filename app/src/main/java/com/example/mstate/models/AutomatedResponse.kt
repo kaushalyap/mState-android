@@ -1,5 +1,6 @@
 package com.example.mstate.models
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.util.Log
@@ -12,6 +13,7 @@ class AutomatedResponse {
 
     private var responded = booleanArrayOf(false, false, false, false)
 
+    @SuppressLint("LogConditional")
     fun respond(activity: Activity, context: Context) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 

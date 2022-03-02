@@ -38,7 +38,7 @@ class Phd9Adapter(var dataSet: Array<QuestionItem>) :
 
     // Restoring saved state when scrolling
     private fun setRadio(holder: ViewHolder, selection: Int) {
-        Log.d(EPDS_ADAPTER, "Selection : $selection")
+        Log.d(TAG, "Selection : $selection")
 
         val b1: RadioButton = holder.rb1
         val b2: RadioButton = holder.rb2
@@ -89,4 +89,8 @@ class Phd9Adapter(var dataSet: Array<QuestionItem>) :
     }
 
     override fun getItemCount(): Int = dataSet.size
+
+    companion object {
+        const val TAG: String = "Phd9Adapter"
+    }
 }

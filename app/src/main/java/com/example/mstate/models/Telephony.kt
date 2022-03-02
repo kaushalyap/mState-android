@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.telephony.SmsManager
 import android.util.Log
 import androidx.preference.PreferenceManager
@@ -25,7 +26,11 @@ class Telephony {
 
     fun sendSMS(context: Context) {
         val emergencyContactNo = getEmergencyContact(context)
-        val smsManager: SmsManager = SmsManager.getDefault()
+        val smsManager: SmsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            context.getSystemService(SmsManager::class.java)
+        } else {
+            SmsManager.getDefault()
+        }
         if (emergencyContactNo != "")
             smsManager.sendTextMessage(emergencyContactNo, null, MESSAGE_BODY, null, null)
 

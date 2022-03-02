@@ -1,5 +1,6 @@
 package com.example.mstate.adapters
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mstate.R
 import com.example.mstate.models.QuestionItem
 
-const val EPDS_ADAPTER = "EpdsAdapter"
-
+@SuppressLint("LogConditional")
 class EpdsAdapter(var dataSet: Array<QuestionItem>) :
     RecyclerView.Adapter<EpdsAdapter.ViewHolder>() {
 
@@ -92,4 +92,7 @@ class EpdsAdapter(var dataSet: Array<QuestionItem>) :
 
     override fun getItemCount(): Int = dataSet.size
 
+    companion object {
+        const val EPDS_ADAPTER = "EpdsAdapter"
+    }
 }

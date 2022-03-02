@@ -29,8 +29,7 @@ import permissions.dispatcher.PermissionRequest
 import java.util.*
 
 
-private const val TAG = "MainActivity"
-private const val RC_SIGN_IN = 9001
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -143,11 +142,11 @@ class MainActivity : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // Google Sign In was successful, authenticate with Firebase
-                val account = task.getResult(ApiException::class.java)!!
+                val account = task.getResult(ApiException::class.java) ?: return
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-                firebaseAuthWithGoogle(account.idToken!!)
+                firebaseAuthWithGoogle(account.idToken ?: return)
 
-                val user = User(account.displayName!!, account.email!!, null)
+                val user = User(account.displayName ?: return, account.email ?: return, null)
                 addUser(user)
 
 
@@ -166,7 +165,7 @@ class MainActivity : AppCompatActivity() {
             override fun onCallback(dRef: String) {
                 val sharedPref = getPreferences(MODE_PRIVATE)
                 with(sharedPref.edit()) {
-                    putString(getString(R.string.pref_user_doc_ref), dRef.toString())
+                    putString(getString(R.string.pref_user_doc_ref), dRef)
                     apply()
                 }
             }
@@ -193,5 +192,10 @@ class MainActivity : AppCompatActivity() {
             .setCancelable(false)
             .setMessage(messageResId)
             .show()
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
+        private const val RC_SIGN_IN = 9001
     }
 }
