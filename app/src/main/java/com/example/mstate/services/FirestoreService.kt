@@ -5,7 +5,6 @@ import com.example.mstate.models.HistoryItem
 import com.example.mstate.models.Settings
 import com.example.mstate.models.User
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
 
@@ -15,7 +14,7 @@ class FirestoreService {
 
     private val db = Firebase.firestore
 
-    fun addUser(callback: MyCallback, user: User) {
+    fun addUser(callback: UserCallback, user: User) {
         var docRef: String? = null
         var userExists = 0
 
@@ -25,25 +24,28 @@ class FirestoreService {
                 for (document in documents) {
                     docRef = document.id
                     userExists = if (docRef != null) 1 else 0
-                    callback.onCallback(docRef!!)
+                    callback.onCallback(docRef ?: return@addOnSuccessListener)
+
+                    if (userExists == 0) {
+                        db.collection("Users")
+                            .add(user)
+                            .addOnSuccessListener { documentReference ->
+                                Log.d(TAG, "User document added!")
+                                Log.d(
+                                    TAG,
+                                    "DocumentSnapshot added with ID: ${documentReference.id}"
+                                )
+
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w(TAG, "Error adding User document", e)
+                            }
+                    }
                 }
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding User document", e)
             }
-
-        if (userExists == 0) {
-            db.collection("Users")
-                .add(user)
-                .addOnSuccessListener { documentReference ->
-                    Log.d(TAG, "User document added!")
-                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-
-                }
-                .addOnFailureListener { e ->
-                    Log.w(TAG, "Error adding User document", e)
-                }
-        }
     }
 
     /*  fun readUser(dRef: String): User? {
@@ -74,14 +76,9 @@ class FirestoreService {
     }
 
     fun addHistoryItem(dRef: String, item: HistoryItem) {
-        val historyHashMap = hashMapOf(
-            "Date" to item.date,
-            "Time" to item.time,
-            "Questionnaire_Type" to item.questionnaireType,
-            "Score" to item.score
-        )
+        Log.d(TAG, "${item.date} ${item.time} ${item.questionnaireType} ${item.score}")
         db.collection("Users").document(dRef)
-            .collection("History").add(historyHashMap)
+            .collection("History").add(item)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "History document added!")
                 Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
@@ -91,19 +88,28 @@ class FirestoreService {
             }
     }
 
-    fun readHistory(dRef: String): List<HistoryItem> {
-        val histories = mutableListOf<HistoryItem>()
+    fun readHistory(callback: HistoryCallback, dRef: String) {
         db.collection("Users").document(dRef).collection("History")
             .get()
             .addOnSuccessListener { result ->
+                val histories: MutableList<HistoryItem>? = mutableListOf()
                 for (document in result) {
                     Log.d(TAG, "${document.id} => ${document.data}")
-                    histories.add(document.toObject<HistoryItem>())
+                    histories?.add(
+                        HistoryItem(
+                            document.getString("date").toString(),
+                            document.getString("time").toString(),
+                            document.getString("questionnaireType").toString(),
+                            document.getDouble("score")?.toInt()!!
+                        )
+                    )
+                    Log.d(TAG, "$histories")
                 }
+
+                callback.onCallback(histories)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting History documents.", exception)
             }
-        return histories
     }
 }

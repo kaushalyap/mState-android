@@ -13,6 +13,7 @@ import com.example.mstate.adapters.EpdsAdapter
 import com.example.mstate.databinding.FragmentEpdsBinding
 import com.example.mstate.models.*
 import com.example.mstate.services.FirestoreService
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,6 +26,7 @@ class EpdsFragment : Fragment() {
     private var items: Array<QuestionItem> = emptyArray()
     private lateinit var firestoreService: FirestoreService
     private lateinit var epdsScoring: EpdsScoring
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +44,7 @@ class EpdsFragment : Fragment() {
         binding.btnSubmit.setOnClickListener {
             if (isValid()) {
                 val diagnosis = calculateScore()
+                saveTestResult()
                 if (diagnosis == EpdsDepressionLevels.Undefined.diagnosis || diagnosis == EpdsDepressionLevels.Not.diagnosis)
                     findNavController().navigate(R.id.action_epds_to_normal)
                 else {
@@ -68,7 +71,13 @@ class EpdsFragment : Fragment() {
             epdsScoring.getScore()
         )
         firestoreService = FirestoreService()
-        firestoreService.addHistoryItem(docRef!!, historyItem)
+
+        if (docRef != null) {
+            firestoreService.addHistoryItem(docRef, historyItem)
+        } else {
+            firebaseAuth.signOut()
+            findNavController().navigate(R.id.action_global_signIn)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -181,7 +190,8 @@ class EpdsFragment : Fragment() {
     }
 
     private fun calculateScore(): String {
-        return EpdsScoring(items).diagnosis()
+        epdsScoring = EpdsScoring(items)
+        return epdsScoring.diagnosis()
     }
 
     private fun isValid(): Boolean {

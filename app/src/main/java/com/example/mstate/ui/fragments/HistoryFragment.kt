@@ -7,12 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mstate.R
 import com.example.mstate.adapters.HistoryAdapter
 import com.example.mstate.databinding.FragmentHistoryBinding
 import com.example.mstate.models.HistoryItem
 import com.example.mstate.services.FirestoreService
+import com.example.mstate.services.HistoryCallback
+import com.google.firebase.auth.FirebaseAuth
+
 
 class HistoryFragment : Fragment() {
 
@@ -21,6 +25,7 @@ class HistoryFragment : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: HistoryAdapter
     private lateinit var firestoreService: FirestoreService
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,19 +39,26 @@ class HistoryFragment : Fragment() {
     private fun init() {
         linearLayoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = linearLayoutManager
-
-        val items: List<HistoryItem> = readTestHistory()
-
-        adapter = HistoryAdapter(items)
-        binding.recyclerView.adapter = adapter
+        readTestHistory()
     }
 
-    private fun readTestHistory(): List<HistoryItem> {
+    private fun readTestHistory() {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         val docRef = sharedPref?.getString(getString(R.string.pref_user_doc_ref), null)
         firestoreService = FirestoreService()
-        val items: List<HistoryItem> = firestoreService.readHistory(docRef!!)
-        return items
+
+        if (docRef != null) {
+            firestoreService.readHistory(object : HistoryCallback {
+                override fun onCallback(histories: List<HistoryItem>?) {
+                    adapter = HistoryAdapter(histories!!)
+                    binding.recyclerView.adapter = adapter
+                }
+
+            }, docRef)
+        } else {
+            firebaseAuth.signOut()
+            findNavController().navigate(R.id.action_global_signIn)
+        }
     }
 
     override fun onDestroyView() {

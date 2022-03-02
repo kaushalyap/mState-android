@@ -12,17 +12,23 @@ import com.example.mstate.R
 class Telephony {
 
     fun makeCall(activity: Activity) {
-        val intent = Intent(
-            Intent.ACTION_CALL,
-            Uri.parse("tel:${getEmergencyContact(activity.baseContext)}")
-        )
-        activity.startActivity(intent)
+        if (getEmergencyContact(activity.baseContext) != "") {
+            val intent = Intent(
+                Intent.ACTION_CALL,
+                Uri.parse("tel:${getEmergencyContact(activity.baseContext)}")
+            )
+            activity.startActivity(intent)
+        } else {
+            Log.d(TAG, "Emergency contact is empty!")
+        }
     }
 
     fun sendSMS(context: Context) {
         val emergencyContactNo = getEmergencyContact(context)
         val smsManager: SmsManager = SmsManager.getDefault()
-        smsManager.sendTextMessage(emergencyContactNo, null, MESSAGE_BODY, null, null)
+        if (emergencyContactNo != "")
+            smsManager.sendTextMessage(emergencyContactNo, null, MESSAGE_BODY, null, null)
+
         Log.d(TAG, "SMS sent!")
     }
 

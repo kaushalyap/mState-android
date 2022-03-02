@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -16,6 +17,7 @@ import com.example.mstate.R
 import com.example.mstate.models.Settings
 import com.example.mstate.services.FirestoreService
 import com.example.mstate.ui.activities.MainActivity
+import com.google.firebase.auth.FirebaseAuth
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.ktx.PermissionsRequester
 import permissions.dispatcher.ktx.constructPermissionsRequest
@@ -26,10 +28,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private lateinit var mainActivity: MainActivity
     private lateinit var prefEmergencyContact: Preference
-
     private lateinit var callPermissionsRequester: PermissionsRequester
     private lateinit var smsPermissionsRequester: PermissionsRequester
     private lateinit var firestoreService: FirestoreService
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
@@ -40,6 +42,57 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setupPreferenceListeners()
         mainActivity = activity as MainActivity
         setEmergencyContactSummary()
+    }
+
+    private fun setSharedPreferenceChangeListeners() {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val listener =
+            SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+                when {
+                    key.equals(getString(R.string.pref_sms)) -> {
+                        if (prefs.getBoolean(getString(R.string.pref_sms), false)) {
+                            smsPermissionsRequester.launch()
+                            with(sharedPref.edit()) {
+                                putBoolean(getString(R.string.pref_sms), true)
+                                apply()
+                            }
+                        } else {
+                            with(sharedPref.edit()) {
+                                putBoolean(getString(R.string.pref_sms), false)
+                                apply()
+                            }
+                        }
+                    }
+                    key.equals(getString(R.string.pref_call)) -> {
+                        if (prefs.getBoolean(getString(R.string.pref_call), false)) {
+                            callPermissionsRequester.launch()
+                            with(sharedPref.edit()) {
+                                putBoolean(getString(R.string.pref_call), true)
+                                apply()
+                            }
+                        } else {
+                            with(sharedPref.edit()) {
+                                putBoolean(getString(R.string.pref_call), false)
+                                apply()
+                            }
+                        }
+                    }
+                }
+            }
+        preferences.registerOnSharedPreferenceChangeListener(listener)
+    }
+
+    private fun setupPreferenceListeners() {
+        setSharedPreferenceChangeListeners()
+        prefEmergencyContact = (findPreference(getString(R.string.pref_emergency_contact))
+            ?: return)
+        prefEmergencyContact.setOnPreferenceClickListener {
+            val contactPickerIntent = Intent(Intent.ACTION_PICK)
+            contactPickerIntent.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
+            startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT)
+            true
+        }
     }
 
     private fun setEmergencyContactSummary() {
@@ -61,49 +114,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
 
-    private fun setupPreferenceListeners() {
-
-        setSharedPreferenceChangeListeners()
-
-        prefEmergencyContact = (findPreference(getString(R.string.pref_emergency_contact))
-            ?: return)
-        prefEmergencyContact.setOnPreferenceClickListener {
-            val contactPickerIntent = Intent(Intent.ACTION_PICK)
-            contactPickerIntent.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
-            startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT)
-            true
-        }
-    }
-
-    private fun setSharedPreferenceChangeListeners() {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val listener =
-            SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
-                when {
-                    key.equals(getString(R.string.pref_sms)) -> {
-                        if (prefs.getBoolean(getString(R.string.pref_sms), false)) {
-                            smsPermissionsRequester.launch()
-                            with(sharedPref.edit()) {
-                                putBoolean(getString(R.string.pref_sms), true)
-                                apply()
-                            }
-                        }
-                    }
-                    key.equals(getString(R.string.pref_call)) -> {
-                        if (prefs.getBoolean(getString(R.string.pref_call), false)) {
-                            callPermissionsRequester.launch()
-                            with(sharedPref.edit()) {
-                                putBoolean(getString(R.string.pref_call), true)
-                                apply()
-                            }
-                        }
-                    }
-                }
-            }
-        preferences.registerOnSharedPreferenceChangeListener(listener)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         saveSettingsOnExit()
@@ -120,9 +130,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val smsOn = sharedPref.getBoolean(getString(R.string.pref_sms), false)
 
         Log.d(TAG, "callOn : $callOn, smsOn : $smsOn")
-        val settings = Settings(smsOn, callOn, eContact!!)
+        val settings: Settings = if (eContact != "Who to contact when depressed") {
+            Settings(smsOn, callOn, eContact!!)
+
+        } else {
+            Settings(smsOn, callOn, "N/A")
+        }
         firestoreService = FirestoreService()
-        firestoreService.updateSettings(docRef!!, settings)
+
+        if (docRef != null) {
+            firestoreService.updateSettings(docRef, settings)
+        } else {
+            firebaseAuth.signOut()
+            findNavController().navigate(R.id.action_global_signIn)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

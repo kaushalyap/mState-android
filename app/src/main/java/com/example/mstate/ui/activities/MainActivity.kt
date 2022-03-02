@@ -16,7 +16,7 @@ import com.example.mstate.R
 import com.example.mstate.databinding.ActivityMainBinding
 import com.example.mstate.models.User
 import com.example.mstate.services.FirestoreService
-import com.example.mstate.services.MyCallback
+import com.example.mstate.services.UserCallback
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -26,6 +26,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import permissions.dispatcher.PermissionRequest
+import java.util.*
 
 
 private const val TAG = "MainActivity"
@@ -161,12 +162,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun addUser(user: User) {
         firestoreService = FirestoreService()
-        firestoreService.addUser(object : MyCallback {
-            override fun onCallback(docRef: String) {
-                Log.d(TAG, "userDocRef : $docRef")
+        firestoreService.addUser(object : UserCallback {
+            override fun onCallback(dRef: String) {
                 val sharedPref = getPreferences(MODE_PRIVATE)
                 with(sharedPref.edit()) {
-                    putString(getString(R.string.pref_user_doc_ref), docRef)
+                    putString(getString(R.string.pref_user_doc_ref), dRef.toString())
                     apply()
                 }
             }

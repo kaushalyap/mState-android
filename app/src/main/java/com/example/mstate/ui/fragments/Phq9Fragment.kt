@@ -13,6 +13,7 @@ import com.example.mstate.adapters.Phd9Adapter
 import com.example.mstate.databinding.FragmentPhqBinding
 import com.example.mstate.models.*
 import com.example.mstate.services.FirestoreService
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,6 +26,7 @@ class Phq9Fragment : Fragment() {
     private var items: Array<QuestionItem> = emptyArray()
     private lateinit var firestoreService: FirestoreService
     private lateinit var phq9Scoring: Phq9Scoring
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,14 +43,12 @@ class Phq9Fragment : Fragment() {
         binding.btnSubmit.setOnClickListener {
             if (isValid()) {
                 val diagnosis = calculateScore()
+                saveTestResult()
                 if (diagnosis != Phq9DepressionLevels.Undefined.disorderName && diagnosis != Phq9DepressionLevels.Not.disorderName) {
                     val action = Phq9FragmentDirections.actionPhqToDepressed(
                         diagnosis,
                         QuestionnaireType.PHQ.name
                     )
-
-                    saveTestResult()
-
                     findNavController().navigate(action)
                 } else
                     findNavController().navigate(R.id.action_phq_to_normal)
@@ -69,7 +69,14 @@ class Phq9Fragment : Fragment() {
             phq9Scoring.getScore()
         )
         firestoreService = FirestoreService()
-        firestoreService.addHistoryItem(docRef!!, historyItem)
+
+        if (docRef != null) {
+            firestoreService.addHistoryItem(docRef, historyItem)
+        } else {
+            firebaseAuth.signOut()
+            findNavController().navigate(R.id.action_global_signIn)
+        }
+
     }
 
     private fun setupRecyclerView() {
