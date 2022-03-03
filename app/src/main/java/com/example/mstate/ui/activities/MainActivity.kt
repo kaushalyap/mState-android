@@ -14,7 +14,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.mstate.R
 import com.example.mstate.databinding.ActivityMainBinding
-import com.example.mstate.models.User
 import com.example.mstate.services.FirestoreService
 import com.example.mstate.services.UserCallback
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -27,8 +26,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import permissions.dispatcher.PermissionRequest
 import java.util.*
-
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -51,23 +48,24 @@ class MainActivity : AppCompatActivity() {
         binding.fabCheck.setOnClickListener {
             navController.navigate(R.id.action_main_to_questionnaire)
         }
-
+        firestoreService = FirestoreService()
         initNavigation()
+        setupGoogleSignInClient()
 
+        // Navigate to SigIn if not already authenticated
+        auth = Firebase.auth
+        if (auth.currentUser?.email == null) {
+            navController.navigate(R.id.action_global_signIn)
+        }
+    }
+
+    private fun setupGoogleSignInClient() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        val account = GoogleSignIn.getLastSignedInAccount(this)
-        if (account == null) {
-
-            navController.navigate(R.id.action_global_signIn)
-        }
-
-        auth = Firebase.auth
+        GoogleSignIn.getLastSignedInAccount(this)
     }
 
     override fun onStart() {
@@ -86,12 +84,20 @@ class MainActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
-                    navController.navigate(R.id.action_signIn_to_main)
-                    Toast.makeText(
-                        applicationContext,
-                        "Welcome ${user?.displayName}!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    firestoreService.doesUserAlreadyExists(object : UserCallback {
+                        override fun onCallback(dRef: String) {
+                            if (dRef.isEmpty()) {
+                                navController.navigate(R.id.action_signIn_to_editProfile)
+                            } else {
+                                navController.navigate(R.id.action_signIn_to_main)
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Welcome ${user?.displayName}!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }, user?.email ?: return@addOnCompleteListener)
 
                 } else {
                     // If sign in fails, display a message to the user.
@@ -129,9 +135,52 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    fun signIn() {
+    fun signInWithGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    fun signUpWithEmail(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "createUserWithEmail:success")
+                    Toast.makeText(applicationContext, "Signed Up!", Toast.LENGTH_SHORT).show()
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    Toast.makeText(applicationContext, "Sign Up failed!", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    fun signInWithEmail(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    val signedInEmail = auth.currentUser?.email
+
+                    firestoreService.doesUserAlreadyExists(object : UserCallback {
+                        override fun onCallback(dRef: String) {
+                            Log.d(TAG, "dRef = $dRef")
+                            if (dRef.isEmpty())
+                                navController.navigate(R.id.action_signIn_to_editProfile)
+                            else
+                                navController.navigate(R.id.action_signIn_to_main)
+                        }
+                    }, signedInEmail!!)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        baseContext, "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -146,10 +195,6 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
                 firebaseAuthWithGoogle(account.idToken ?: return)
 
-                val user = User(account.displayName ?: return, account.email ?: return, null)
-                addUser(user)
-
-
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e)
@@ -157,19 +202,6 @@ class MainActivity : AppCompatActivity() {
                     .show()
             }
         }
-    }
-
-    private fun addUser(user: User) {
-        firestoreService = FirestoreService()
-        firestoreService.addUser(object : UserCallback {
-            override fun onCallback(dRef: String) {
-                val sharedPref = getPreferences(MODE_PRIVATE)
-                with(sharedPref.edit()) {
-                    putString(getString(R.string.pref_user_doc_ref), dRef)
-                    apply()
-                }
-            }
-        }, user)
     }
 
     internal fun showFabBottomAppBar() {

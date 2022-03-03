@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_main_to_settings"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/questionnaireFragment"
@@ -47,7 +50,11 @@
         android:id="@+id/signInFragment"
         android:name="com.example.mstate.ui.fragments.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" >
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_signIn_to_editProfile"
+            app:destination="@id/editProfileFragment"
+            app:popUpTo="@id/signInFragment" />
         <action
             android:id="@+id/action_signIn_to_main"
             app:destination="@id/mainFragment"
@@ -127,4 +134,28 @@
         android:id="@+id/normalFragment"
         android:name="com.example.mstate.ui.fragments.NormalFragment"
         android:label="NormalFragment" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.mstate.ui.fragments.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile">
+        <argument
+            android:name="formName"
+            android:defaultValue="Create Profile"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_editProfile_to_main"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.mstate.ui.fragments.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profile_to_editProfile"
+            app:destination="@id/editProfileFragment"
+            app:popUpTo="@id/profileFragment" />
+    </fragment>
 </navigation>

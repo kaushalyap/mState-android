@@ -26,19 +26,18 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         app:buttonSize="wide"
-        app:layout_constraintBottom_toTopOf="@+id/btnLoginMagicLink"
+        app:layout_constraintBottom_toTopOf="@+id/btnEmailSignIn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLoginMagicLink"
+        android:id="@+id/btnEmailSignIn"
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
-        android:text="@string/login_with_magic_link"
-
+        android:text="@string/sign_in_with_email"
         android:textAllCaps="false"
         android:textColor="#808080"
         app:layout_constraintBottom_toTopOf="@+id/lbAgreement"
@@ -47,11 +46,20 @@
         app:layout_constraintTop_toBottomOf="@+id/btnGoogleSignIn" />
 
     <TextView
+        android:id="@+id/lbSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/no_account_yet"
+        app:layout_constraintEnd_toEndOf="@+id/btnEmailSignIn"
+        app:layout_constraintStart_toStartOf="@+id/btnEmailSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/btnEmailSignIn" />
+
+    <TextView
         android:id="@+id/lbAgreement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-
         android:text="@string/by_continuing_you_agree_to_our_terms_and_conditions"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

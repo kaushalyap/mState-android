@@ -2,9 +2,9 @@ package com.example.mstate.services
 
 import android.annotation.SuppressLint
 import android.util.Log
+import com.example.mstate.models.AppUser
 import com.example.mstate.models.HistoryItem
 import com.example.mstate.models.Settings
-import com.example.mstate.models.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -14,27 +14,43 @@ class FirestoreService {
 
     private val db = Firebase.firestore
 
-    fun addUser(callback: UserCallback, user: User) {
+    fun doesUserAlreadyExists(callback: UserCallback, email: String) {
+        db.collection("Users")
+            .whereEqualTo("email", email).get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val docRef = document.id
+                    callback.onCallback(docRef)
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error adding User document", e)
+            }
+    }
+
+
+    fun addUser(callback: UserCallback, appUser: AppUser) {
         var docRef: String
         var userExists: Int
 
         db.collection("Users")
-            .whereEqualTo("email", user.email).get()
+            .whereEqualTo("email", appUser.email).get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     docRef = document.id
-                    userExists = if (docRef != null) 1 else 0
+                    userExists = if (docRef.isNotEmpty()) 1 else 0
                     callback.onCallback(docRef)
 
                     if (userExists == 0) {
                         db.collection("Users")
-                            .add(user)
+                            .add(appUser)
                             .addOnSuccessListener { documentReference ->
                                 Log.d(TAG, "User document added!")
                                 Log.d(
                                     TAG,
                                     "DocumentSnapshot added with ID: ${documentReference.id}"
                                 )
+
                             }
                             .addOnFailureListener { e ->
                                 Log.w(TAG, "Error adding User document", e)
@@ -62,11 +78,23 @@ class FirestoreService {
           return user
       }*/
 
+    fun updateUser(dRef: String, appUser: AppUser) {
+        db.collection("Users")
+            .document(dRef)
+            .update(
+                "guardian.fullName", appUser.guardian?.fullName,
+                "guardian.mobileNo", appUser.guardian?.mobileNo,
+                "settings.smsOn", appUser.settings?.smsOn,
+                "settings.callOn", appUser.settings?.callOn
+            )
+            .addOnSuccessListener { Log.d(TAG, "User DocumentSnapshot successfully updated!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error updating User document", e) }
+    }
+
     fun updateSettings(dRef: String, settings: Settings) {
         db.collection("Users")
             .document(dRef)
             .update(
-                "settings.emergencyContact", settings.emergencyContact,
                 "settings.smsOn", settings.smsOn,
                 "settings.callOn", settings.callOn
             )

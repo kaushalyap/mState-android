@@ -14,7 +14,6 @@
     <string name="mstate_logo">mState logo</string>
     <string name="app_desc">mState help people to diagnose user\'s mood and help and encourage users to seek help and notify relevant contacts if they are in a troubled situation.</string>
     <string name="stethoscope">Stethoscope</string>
-    <string name="login_with_magic_link">Login with Magic Link</string>
     <string name="personal_health_questionnaire_depression_scale_phq9">Personal Health Questionnaire Depression Scale (PHQ9)</string>
     <string name="edinburgh_postnatal_depression_scale_epds">Edinburgh Postnatal Depression Scale (EPDS)</string>
     <string name="pref_sms">sms</string>
@@ -111,8 +110,6 @@
     <string name="pregnant_mothers_and_mothers_with_newborns">Pregnant Mothers and Mothers with Newborns</string>
     <string name="sign_out">Sign Out</string>
     <string name="diagnosis">Diagnosis</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="guidelines">Guidelines</string>
     <string name="sad_face">Sad face</string>
     <string name="okay">Okay</string>
@@ -120,4 +117,25 @@
     <string name="i_ll_keep_these_in_mind">I\'ll Keep these in mind</string>
     <string name="read_guidelines">Read Guidelines</string>
     <string name="pref_user_doc_ref">user-doc-ref</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="sign_in_with_email">Sign In with Email</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="no_account_yet">No account yet? <u>Sign Up</u></string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="address">Address</string>
+    <string name="mobile_no">Mobile No</string>
+    <string name="name">Full Name</string>
+    <string name="profile">Profile</string>
+    <string name="next_of_kin_guardian_name">Next of kin / Guardian Name</string>
+    <string name="their_mobile_no">Their Mobile No</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="done">Done</string>
+    <string name="_12_987_65_4321">+12 987 65 4321</string>
+    <string name="john_doe">John Doe</string>
+    <string name="no_26_67th_street_neverland">No 26, 67th Street, Neverland</string>
+    <string name="_12_123_45_6789">+12 123 45 6789</string>
+    <string name="marcus_doe">Marcus Doe</string>
 </resources>
