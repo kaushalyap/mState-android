@@ -1,6 +1,6 @@
 package com.example.mstate.models
 
-class EpdsScoring(var answers: Array<QuestionItem>) {
+class EpdsScoring(private var answers: Array<QuestionItem>) {
     private var score = 0
     private val suicidalThoughts = answers[9].selected != 3
     private val unmarkedQuestionIndexes = arrayOf(0, 1, 3)

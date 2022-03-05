@@ -53,7 +53,6 @@ class HistoryFragment : Fragment() {
                     adapter = HistoryAdapter(histories!!)
                     binding.recyclerView.adapter = adapter
                 }
-
             }, docRef)
         } else {
             firebaseAuth.signOut()

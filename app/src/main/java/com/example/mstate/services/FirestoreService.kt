@@ -126,8 +126,34 @@ class FirestoreService {
             }
     }
 
+    fun readLastThreeHistories(callback: HistoryCallback, dRef: String) {
+        db.collection("Users").document(dRef).collection("History")
+            .limit(3)
+            .get()
+            .addOnSuccessListener { result ->
+                val histories: MutableList<HistoryItem> = mutableListOf()
+                for (document in result) {
+                    Log.d(TAG, "${document.id} => ${document.data}")
+                    histories.add(
+                        HistoryItem(
+                            document.getString("date").toString(),
+                            document.getString("time").toString(),
+                            document.getString("questionnaireType").toString(),
+                            document.getDouble("score")?.toInt() ?: return@addOnSuccessListener
+                        )
+                    )
+                    Log.d(TAG, "$histories")
+                }
+
+                callback.onCallback(histories)
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting History documents.", exception)
+            }
+    }
+
+
     companion object {
         const val TAG: String = "FirebaseService"
-
     }
 }

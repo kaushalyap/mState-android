@@ -1,40 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="20dp"
-    tools:context=".ui.fragments.GuidelinesFragment">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/raleway_medium"
+        android:letterSpacing="0.1"
+        android:text="@string/guidelines"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/guidelines"
-            android:textSize="30sp"
-            android:fontFamily="@font/raleway_medium"
-            android:letterSpacing="0.1"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/txtGuidelines"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        tools:text="Please go to meet a psychiatrist with a family member or friend and explain your situation. Probably doctor may prescribe medicine and instruct your companion how to help you with the situation and ask you to exercise daily and change your way of negative thinking.
+\n\nPLEASE do not take medicine against the medical advice." />
 
-            <TextView
-                android:id="@+id/txtGuidelines"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                tools:text="lorem" />
-
-            <Button
-                android:id="@+id/btn"
-                android:layout_height="60dp"
-                android:layout_width="match_parent"
-                android:letterSpacing="0.1"
-                android:layout_marginTop="20dp"
-                android:text="@string/i_ll_keep_these_in_mind" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:letterSpacing="0.1"
+        android:text="@string/i_ll_keep_these_in_mind" />
+</LinearLayout>

@@ -52,6 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:letterSpacing="0.1"
         android:text="@string/no_account_yet"
         app:layout_constraintEnd_toEndOf="@+id/btnEmailSignIn"
         app:layout_constraintStart_toStartOf="@+id/btnEmailSignIn"
