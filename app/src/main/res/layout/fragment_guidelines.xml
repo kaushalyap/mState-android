@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="20dp"
-    android:orientation="vertical"
     tools:context=".ui.fragments.GuidelinesFragment">
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/guidelines"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+            android:layout_height="wrap_content"
+            android:text="@string/guidelines"
+            android:textSize="30sp"
+            android:fontFamily="@font/raleway_medium"
+            android:letterSpacing="0.1"
+            android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtGuidelines"
@@ -32,10 +31,10 @@
 
             <Button
                 android:id="@+id/btn"
+                android:layout_height="60dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:letterSpacing="0.1"
                 android:layout_marginTop="20dp"
                 android:text="@string/i_ll_keep_these_in_mind" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-</LinearLayout>

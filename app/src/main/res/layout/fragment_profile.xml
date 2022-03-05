@@ -12,13 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/profile"
+        android:fontFamily="@font/raleway_medium"
         android:textSize="30sp"
+        android:letterSpacing="0.1"
         android:textStyle="bold" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:text="@string/name" />
 
     <TextView
@@ -26,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:textSize="30sp"
+        android:textSize="25sp"
         tools:text="John Doe" />
 
     <TextView
@@ -40,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:textSize="30sp"
+        android:textSize="25sp"
         tools:text="No 26, 67th Street, Neverland" />
 
     <TextView
@@ -54,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:textSize="30sp"
+        android:textSize="25sp"
         tools:text="+12 123 45 6789" />
 
     <TextView
@@ -68,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:textSize="30sp"
+        android:textSize="25sp"
         tools:text="Marcus Doe" />
 
     <TextView
@@ -82,14 +84,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:textSize="30sp"
+        android:textSize="25sp"
         tools:text="+12 987 65 4321" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEdit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="25dp"
         android:text="@string/edit_profile"
         app:icon="@drawable/ic_twotone_edit_24" />
 

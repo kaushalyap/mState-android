@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
         android:textSize="20sp"
+        android:letterSpacing="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="12 of Jan 2022" />
@@ -22,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
+        android:letterSpacing="0.05"
         app:layout_constraintStart_toStartOf="@+id/lbDate"
         app:layout_constraintTop_toBottomOf="@+id/lbDate"
         tools:text="2.55 PM" />
@@ -32,6 +34,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:letterSpacing="0.05"
         tools:text="EPDS" />
 
     <TextView
@@ -39,6 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
+        android:letterSpacing="0.05"
         app:layout_constraintEnd_toEndOf="@+id/lbQuestionnaireType"
         app:layout_constraintTop_toBottomOf="@+id/lbQuestionnaireType"
         tools:text="8.0" />

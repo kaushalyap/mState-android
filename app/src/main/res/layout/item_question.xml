@@ -9,7 +9,8 @@
         android:id="@+id/lbQuestionNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:fontFamily="@font/raleway_medium"
+        android:textSize="25sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/_1" />
@@ -19,7 +20,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:textSize="20sp"
+        android:fontFamily="@font/raleway_medium"
+        android:textSize="25sp"
         app:layout_constraintStart_toEndOf="@+id/lbQuestionNo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -38,6 +40,7 @@
         <RadioButton
             android:id="@+id/radioAnswer1"
             android:layout_width="wrap_content"
+            android:letterSpacing="0.05"
             android:layout_height="wrap_content"
             tools:text="@string/as_much_as_i_always_could" />
 
@@ -45,18 +48,21 @@
             android:id="@+id/radioAnswer2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:letterSpacing="0.05"
             tools:text="@string/not_quite_so_much_now" />
 
         <RadioButton
             android:id="@+id/radioAnswer3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:letterSpacing="0.05"
             tools:text="@string/definitely_not_so_much_now" />
 
         <RadioButton
             android:id="@+id/radioAnswer4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:letterSpacing="0.05"
             tools:text="@string/not_at_all" />
     </RadioGroup>
 
@@ -64,6 +70,7 @@
         android:id="@+id/lbError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:letterSpacing="0.05"
         app:layout_constraintStart_toStartOf="@+id/radioGroup"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup"
         tools:text="@string/please_select_a_choice" />

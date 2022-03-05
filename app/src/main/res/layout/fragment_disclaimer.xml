@@ -12,6 +12,8 @@
         android:layout_marginTop="100dp"
         android:layout_marginBottom="20dp"
         android:text="@string/disclaimer"
+        android:fontFamily="@font/raleway_medium"
+        android:letterSpacing="0.05"
         android:textAlignment="center"
         android:textSize="30sp"
         android:textStyle="bold" />

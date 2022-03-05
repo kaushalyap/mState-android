@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/history"
+        android:fontFamily="@font/raleway_medium"
+        android:letterSpacing="0.1"
         android:textSize="30sp"
         android:textStyle="bold" />
 
