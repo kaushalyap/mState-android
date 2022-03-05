@@ -8,9 +8,11 @@
         <entry key="app/src/main/res/drawable/ic_contact_24.xml" value="0.3345" />
         <entry key="app/src/main/res/drawable/ic_history_24.xml" value="0.237" />
         <entry key="app/src/main/res/drawable/ic_message_24.xml" value="0.3345" />
+        <entry key="app/src/main/res/drawable/ic_mindfulness.xml" value="0.2515" />
         <entry key="app/src/main/res/drawable/ic_settings_24.xml" value="0.237" />
         <entry key="app/src/main/res/drawable/ic_sms_24.xml" value="0.3345" />
         <entry key="app/src/main/res/drawable/ic_stethoscope_24.xml" value="0.237" />
+        <entry key="app/src/main/res/drawable/in_thoughts.xml" value="0.2515" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.37817028985507245" />
         <entry key="app/src/main/res/layout/dialog_email.xml" value="0.271875" />
         <entry key="app/src/main/res/layout/dialog_email_sign_in.xml" value="0.409375" />
