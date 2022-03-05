@@ -7,14 +7,14 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
-import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.example.mstate.R
 import com.example.mstate.models.Settings
 import com.example.mstate.services.FirestoreService
-import com.example.mstate.ui.activities.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.ktx.PermissionsRequester
@@ -23,8 +23,6 @@ import permissions.dispatcher.ktx.constructPermissionsRequest
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
-    private lateinit var mainActivity: MainActivity
-    private lateinit var prefEmergencyContact: Preference
     private lateinit var callPermissionsRequester: PermissionsRequester
     private lateinit var smsPermissionsRequester: PermissionsRequester
     private lateinit var firestoreService: FirestoreService
@@ -36,7 +34,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun init() {
-        mainActivity = activity as MainActivity
         setSharedPreferenceChangeListeners()
     }
 
@@ -139,7 +136,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun onSmsShowRationale(request: PermissionRequest) {
-        mainActivity.showPermissionRationaleDialog(R.string.permission_call_rationale, request)
+        showPermissionRationaleDialog(R.string.permission_call_rationale, request)
     }
 
     private fun onCallNeverAskAgain() {
@@ -155,8 +152,21 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun onCallShowRationale(request: PermissionRequest) {
-        mainActivity.showPermissionRationaleDialog(R.string.permission_call_rationale, request)
+        showPermissionRationaleDialog(R.string.permission_call_rationale, request)
     }
+
+    private fun showPermissionRationaleDialog(
+        @StringRes messageResId: Int,
+        request: PermissionRequest
+    ) {
+        AlertDialog.Builder(requireContext())
+            .setPositiveButton(R.string.allow) { _, _ -> request.proceed() }
+            .setNegativeButton(R.string.deny) { _, _ -> request.cancel() }
+            .setCancelable(false)
+            .setMessage(messageResId)
+            .show()
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

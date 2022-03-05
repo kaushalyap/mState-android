@@ -21,6 +21,7 @@ class FirestoreService {
                 for (document in documents) {
                     val docRef = document.id
                     callback.onCallback(docRef)
+                    Log.d(TAG, "docRef = $docRef")
                 }
             }
             .addOnFailureListener { e ->
@@ -62,21 +63,6 @@ class FirestoreService {
                 Log.w(TAG, "Error adding User document", e)
             }
     }
-
-    /*  fun readUser(dRef: String): User? {
-          var user: User? = null
-          db.collection("Users").document(dRef)
-              .get()
-              .addOnSuccessListener { document ->
-                  Log.d(TAG, "User document fetched!")
-                  Log.d(TAG, "${document.id} => ${document.data}")
-                  user = document.toObject<User>()
-              }
-              .addOnFailureListener { exception ->
-                  Log.w(TAG, "Error getting User document.", exception)
-              }
-          return user
-      }*/
 
     fun updateUser(dRef: String, appUser: AppUser) {
         db.collection("Users")
