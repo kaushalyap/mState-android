@@ -52,13 +52,19 @@
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in">
         <action
-            android:id="@+id/action_signIn_to_editProfile"
-            app:destination="@id/editProfileFragment"
+            android:id="@+id/action_signIn_to_signUpEmail"
+            app:destination="@id/signUpEmailFragment"
             app:popUpTo="@id/signInFragment" />
+        <action
+            android:id="@+id/action_signIn_to_signInEmail"
+            app:destination="@id/signInEmailFragment" />
         <action
             android:id="@+id/action_signIn_to_main"
             app:destination="@id/mainFragment"
             app:popUpTo="@id/mainFragment" />
+        <action
+            android:id="@+id/action_signIn_to_editProfile"
+            app:destination="@id/editProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
@@ -133,7 +139,9 @@
     <fragment
         android:id="@+id/normalFragment"
         android:name="com.example.mstate.ui.fragments.NormalFragment"
-        android:label="NormalFragment" />
+        android:label="NormalFragment"
+        tools:layout="@layout/fragment_normal" />
+
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.example.mstate.ui.fragments.EditProfileFragment"
@@ -157,5 +165,23 @@
             android:id="@+id/action_profile_to_editProfile"
             app:destination="@id/editProfileFragment"
             app:popUpTo="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpEmailFragment"
+        android:name="com.example.mstate.ui.fragments.SignUpEmailFragment"
+        android:label="fragment_sign_up_email"
+        tools:layout="@layout/fragment_sign_up_email" />
+    <fragment
+        android:id="@+id/signInEmailFragment"
+        android:name="com.example.mstate.ui.fragments.SignInEmailFragment"
+        android:label="fragment_sign_in_email"
+        tools:layout="@layout/fragment_sign_in_email">
+        <action
+            android:id="@+id/action_signInEmail_to_editProfile"
+            app:destination="@id/editProfileFragment"
+            app:popUpTo="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_signInEmail_to_main"
+            app:destination="@id/mainFragment" />
     </fragment>
 </navigation>
