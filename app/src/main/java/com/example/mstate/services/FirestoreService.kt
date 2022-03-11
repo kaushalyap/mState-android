@@ -15,30 +15,27 @@ class FirestoreService {
     private val db = Firebase.firestore
 
     fun addUser(callback: UserCallback, appUser: AppUser) {
-
-        var docRef = ""
-        var userExists: Int
-
         db.collection("Users")
             .whereEqualTo("email", appUser.email).get()
             .addOnCompleteListener { task ->
+                var docRef = ""
+                val userExists: Int
+
                 if (task.isSuccessful) {
                     for (document in task.result) {
-                        Log.d(TAG, document.id + " => " + document.data)
-                        docRef = document.id
+                        if (document.exists()) {
+                            Log.d(TAG, document.id + " => " + document.data)
+                            docRef = document.id
+                        }
                     }
                     userExists = if (docRef.isNotEmpty()) 1 else 0
 
                     if (userExists == 0) {
                         db.collection("Users")
-                            .document(appUser.uid!!)
+                            .document(appUser.uid ?: return@addOnCompleteListener)
                             .set(appUser)
-                            .addOnSuccessListener { documentReference ->
+                            .addOnSuccessListener { _ ->
                                 Log.d(TAG, "User document added!")
-                                Log.d(
-                                    TAG,
-                                    "DocumentSnapshot added with ID:"
-                                )
                                 callback.onPostExecute(docRef)
                             }
                             .addOnFailureListener { e ->
@@ -52,8 +49,8 @@ class FirestoreService {
     }
 
 
-    fun readUser(callbackReadUser: UserCallback, dRef: String) {
-        db.collection("Users").document(dRef).get()
+    fun readUser(callbackReadUser: UserCallback, uid: String) {
+        db.collection("Users").document(uid).get()
             .addOnSuccessListener { document ->
                 val name = document.getString("name")
                 val email = document.getString("email")
@@ -67,9 +64,9 @@ class FirestoreService {
             }
     }
 
-    fun updateUser(dRef: String, appUser: AppUser) {
+    fun updateUser(uid: String, appUser: AppUser) {
         db.collection("Users")
-            .document(dRef)
+            .document(uid)
             .update(
                 "guardian.fullName", appUser.guardian?.fullName,
                 "guardian.mobileNo", appUser.guardian?.mobileNo,
@@ -80,9 +77,9 @@ class FirestoreService {
             .addOnFailureListener { e -> Log.w(TAG, "Error updating User document", e) }
     }
 
-    fun updateSettings(dRef: String, settings: Settings) {
+    fun updateSettings(uid: String, settings: Settings) {
         db.collection("Users")
-            .document(dRef)
+            .document(uid)
             .update(
                 "settings.smsOn", settings.smsOn,
                 "settings.callOn", settings.callOn
@@ -91,9 +88,9 @@ class FirestoreService {
             .addOnFailureListener { e -> Log.w(TAG, "Error updating User document", e) }
     }
 
-    fun addHistoryItem(dRef: String, item: HistoryItem) {
+    fun addHistoryItem(uid: String, item: HistoryItem) {
         Log.d(TAG, "${item.date} ${item.time} ${item.questionnaireType} ${item.score}")
-        db.collection("Users").document(dRef)
+        db.collection("Users").document(uid)
             .collection("History").add(item)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "History document added!")
@@ -104,8 +101,8 @@ class FirestoreService {
             }
     }
 
-    fun readHistory(callback: HistoryCallback, dRef: String) {
-        db.collection("Users").document(dRef).collection("History")
+    fun readHistory(callback: HistoryCallback, uid: String) {
+        db.collection("Users").document(uid).collection("History")
             .get()
             .addOnSuccessListener { result ->
                 val histories: MutableList<HistoryItem> = mutableListOf()
@@ -129,8 +126,8 @@ class FirestoreService {
             }
     }
 
-    fun readLastThreeHistories(callback: HistoryCallback, dRef: String) {
-        db.collection("Users").document(dRef).collection("History")
+    fun readLastThreeHistories(callback: HistoryCallback, uid: String) {
+        db.collection("Users").document(uid).collection("History")
             .limit(3)
             .get()
             .addOnSuccessListener { result ->
@@ -147,14 +144,12 @@ class FirestoreService {
                     )
                     Log.d(TAG, "$histories")
                 }
-
                 callback.onPostExecute(histories)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting History documents.", exception)
             }
     }
-
 
     companion object {
         const val TAG: String = "FirebaseService"

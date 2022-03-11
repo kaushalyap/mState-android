@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.preference.PreferenceManager
 import com.example.mstate.R
 import com.example.mstate.databinding.FragmentEditProfileBinding
 import com.example.mstate.models.AppUser
@@ -21,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-
+@SuppressLint("LogConditional")
 class EditProfileFragment : Fragment() {
 
     private var _binding: FragmentEditProfileBinding? = null
@@ -74,9 +73,8 @@ class EditProfileFragment : Fragment() {
                     email ?: return@setOnClickListener, false, address, mobileNo, guardian, null
                 )
 
-                if (formName == "Create Profile") {
+                if (formName == resources.getString(R.string.create_profile)) {
                     firestoreService.addUser(object : UserCallback {
-                        @SuppressLint("LogConditional")
                         override fun onPostExecute(dRef: String) {
                             val sharedPref =
                                 activity?.getPreferences(Context.MODE_PRIVATE) ?: return
@@ -94,13 +92,11 @@ class EditProfileFragment : Fragment() {
                         override fun onPostExecute(user: AppUser) {}
                     }, user)
                 } else {
-                    val sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(requireContext())
-                    val dRef = sharedPreferences.getString(
-                        requireContext().resources.getString(R.string.pref_user_doc_ref),
-                        ""
-                    ).toString()
-                    firestoreService.updateUser(dRef, user)
+
+                    firestoreService.updateUser(
+                        auth.currentUser?.uid ?: return@setOnClickListener,
+                        user
+                    )
                     findNavController().popBackStack()
                 }
             } else

@@ -1,12 +1,11 @@
 package com.example.mstate.ui.fragments
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.mstate.R
@@ -18,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+@SuppressLint("LogConditional")
 class SignUpEmailFragment : Fragment() {
 
     private var _binding: FragmentSignUpEmailBinding? = null
@@ -41,10 +41,10 @@ class SignUpEmailFragment : Fragment() {
 
             if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 binding.lbError.visibility = View.VISIBLE
-                binding.lbError.text = "Please fill all the fields"
+                binding.lbError.text = resources.getString(R.string.fill_all_fields)
             } else if (password != confirmPassword) {
                 binding.lbError.visibility = View.VISIBLE
-                binding.lbError.text = "Passwords do not match!"
+                binding.lbError.text = resources.getString(R.string.passwords_do_not_match)
             } else
                 signUpWithEmail(email, password)
         }
@@ -69,18 +69,7 @@ class SignUpEmailFragment : Fragment() {
                     )
                     firestoreService.addUser(object : UserCallback {
                         override fun onPostExecute(dRef: String) {
-                            val sharedPref =
-                                activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-                            with(sharedPref.edit()) {
-                                putString(
-                                    getString(R.string.pref_user_doc_ref),
-                                    dRef
-                                )
-                                apply()
-                                Toast.makeText(requireContext(), "Signed Up!", Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                            Log.d(EditProfileFragment.TAG, "dRef = $dRef")
+                            Log.d(TAG, "dRef = $dRef")
                         }
 
                         override fun onPostExecute(user: AppUser) {}
@@ -90,8 +79,7 @@ class SignUpEmailFragment : Fragment() {
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     binding.lbError.visibility = View.VISIBLE
-                    var errorMessage = ""
-                    errorMessage =
+                    val errorMessage: String =
                         if (task.exception.toString().contains("email address is already in use"))
                             "Email address is already in use"
                         else

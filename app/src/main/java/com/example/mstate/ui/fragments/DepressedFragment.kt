@@ -29,8 +29,7 @@ class DepressedFragment : Fragment() {
         val result = args.result
         val testType = args.testType
         binding.txtDesc.text =
-            "Sorry to let you know you were diagnosed with $result according to the $testType scoring."
-
+            String.format(resources.getString(R.string.sorry_to_let_you_know), result, testType)
         binding.btnSeeGuide.setOnClickListener {
             findNavController().navigate(R.id.action_depressed_to_guidelines)
         }

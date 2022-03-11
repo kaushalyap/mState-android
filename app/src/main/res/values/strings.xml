@@ -9,7 +9,20 @@
     <string name="by_continuing_you_agree_to_our_terms_and_conditions">By continuing you agree to our terms and conditions</string>
     <string name="female_doing_mindfulness_meditation">Female doing mindfulness meditation</string>
     <string name="disclaimer">Disclaimer</string>
-    <string name="disclaimer_desc">While this app help to diagnose certain moods through medical questionnaires , this system is not perfect, please refer to trained medical professional for a more accurate diagnosis. \n\nWe as mState developers do not hold responsible for any damage caused by using this app.</string>
+    <string name="disclaimer_desc">While this app help to diagnose certain moods through medical questionnaires , but this is not perfect, please refer to trained medical professional for a more accurate diagnosis. \n\nWe as mState developers do not hold responsible for any damage caused by using this app.\n
+<b>EPDS</b>
+
+The EPDS Score should not override clinical judgment. A careful clinical assessment should be carried out to confirm the diagnosis. The scale indicates how the mother has felt during the previous week. In doubtful cases it may be useful to repeat the tool after 2 weeks. The scale will not detect mothers with anxiety neuroses, phobias or personality disorders.
+
+The scale will not detect mothers with anxiety neuroses, phobias or personality disorders.
+
+<b>PHQ9</b>
+
+Since the questionnaire relies on patient self-report, all responses should be verified by the clinician, and a definitive diagnosis is made on clinical grounds taking into account how well the patient understood the questionnaire, as well as other relevant information from the patient.
+
+Diagnoses of Major Depressive Disorder or Other Depressive Disorder also require impairment of social, occupational, or other important areas of functioning (Question #10) and ruling out normal bereavement, a history of a Manic Episode (Bipolar Disorder), and a physical disorder, medication, or other drug as the biological cause of the depressive symptoms.
+
+    </string>
     <string name="version_0_0_1">Version : 0.0.1</string>
     <string name="mstate_logo">mState logo</string>
     <string name="app_desc">mState help people to diagnose user\'s mood and help and encourage users to seek help and notify relevant contacts if they are in a troubled situation.</string>
@@ -123,7 +136,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="no_account_yet">No account yet? <u>Sign Up</u></string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="passwords_do_not_match">Passwords do not match!</string>
     <string name="address">Address</string>
     <string name="mobile_no">Mobile No</string>
     <string name="name">Full Name</string>
@@ -139,4 +152,10 @@
     <string name="_12_123_45_6789">+12 123 45 6789</string>
     <string name="marcus_doe">Marcus Doe</string>
     <string name="sign_in">Sign In</string>
+    <string name="fill_all_fields">Please fill all the fields</string>
+    <string name="incorrect_email_password">Incorrect email / password</string>
+    <string name="email_password_not_empty">Email / Password cannot be empty!</string>
+    <string name="sign_in_failed">Sign In failed!</string>
+    <string name="create_profile">Create Profile</string>
+    <string name="sorry_to_let_you_know">Sorry to let you know you were diagnosed with %1$s according to the %2$s scoring.</string>
 </resources>

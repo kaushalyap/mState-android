@@ -1,5 +1,6 @@
 package com.example.mstate.ui.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -39,7 +40,7 @@ class SignInEmailFragment : Fragment() {
             val email = binding.editEmail.text.toString()
             val password = binding.editPassword.text.toString()
             if (email.isEmpty() || password.isEmpty())
-                binding.lbError.text = "Email / Password cannot be empty!"
+                binding.lbError.text = resources.getString(R.string.email_password_not_empty)
             else
                 signInWithEmail(email, password)
         }
@@ -60,6 +61,7 @@ class SignInEmailFragment : Fragment() {
                     firestoreService.readUser(object : UserCallback {
                         override fun onPostExecute(dRef: String) {}
 
+                        @SuppressLint("LogConditional")
                         override fun onPostExecute(user: AppUser) {
                             Log.d(TAG, "profileComplete = ${user.profileComplete}")
                             if (user.profileComplete)
@@ -71,7 +73,7 @@ class SignInEmailFragment : Fragment() {
                 } else {
                     Log.w(SignInFragment.TAG, "signInWithEmail:failure", task.exception)
                     binding.lbError.visibility = View.VISIBLE
-                    binding.lbError.text = "Incorrect email / password"
+                    binding.lbError.text = resources.getString(R.string.incorrect_email_password)
                 }
             }
     }

@@ -9,24 +9,25 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.example.mstate.R
 import com.example.mstate.models.Settings
 import com.example.mstate.services.FirestoreService
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.ktx.PermissionsRequester
 import permissions.dispatcher.ktx.constructPermissionsRequest
 
-
+@SuppressLint("LogConditional")
 class SettingsFragment : PreferenceFragmentCompat() {
 
     private lateinit var callPermissionsRequester: PermissionsRequester
     private lateinit var smsPermissionsRequester: PermissionsRequester
     private lateinit var firestoreService: FirestoreService
-    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
@@ -77,27 +78,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
 
-    // pref_emergency_contact
-
-    @SuppressLint("LogConditional")
     private fun saveSettingsOnExit() {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        val docRef = sharedPref.getString(getString(R.string.pref_user_doc_ref), null)
         val callOn = sharedPref.getBoolean(getString(R.string.pref_call), false)
         val smsOn = sharedPref.getBoolean(getString(R.string.pref_sms), false)
 
         Log.d(TAG, "callOn : $callOn, smsOn : $smsOn")
         val settings = Settings(smsOn, callOn)
 
-
         firestoreService = FirestoreService()
-
-        if (docRef != null) {
-            firestoreService.updateSettings(docRef, settings)
-        } else {
-            firebaseAuth.signOut()
-            findNavController().navigate(R.id.action_global_signIn)
-        }
+        auth = Firebase.auth
+        firestoreService.updateSettings(auth.uid.toString(), settings)
     }
 
 

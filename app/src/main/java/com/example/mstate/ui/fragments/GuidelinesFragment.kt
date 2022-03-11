@@ -1,13 +1,11 @@
 package com.example.mstate.ui.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.mstate.R
 import com.example.mstate.databinding.FragmentGuidelinesBinding
 import com.example.mstate.models.AutomatedResponse
 import com.example.mstate.models.Guider
@@ -15,12 +13,16 @@ import com.example.mstate.models.HistoryItem
 import com.example.mstate.models.QuestionnaireType
 import com.example.mstate.services.FirestoreService
 import com.example.mstate.services.HistoryCallback
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class GuidelinesFragment : Fragment() {
 
     private var _binding: FragmentGuidelinesBinding? = null
     internal val binding get() = _binding!!
     private lateinit var firestoreService: FirestoreService
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,18 +47,16 @@ class GuidelinesFragment : Fragment() {
     }
 
     private fun setGuidelines() {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        val docRef = sharedPref?.getString(getString(R.string.pref_user_doc_ref), null)
+        auth = Firebase.auth
         firestoreService = FirestoreService()
-        if (docRef != null) {
-            firestoreService.readLastThreeHistories(object : HistoryCallback {
-                override fun onPostExecute(histories: List<HistoryItem>?) {
-                    val lastTests = getHistoriesRelatedToLastItem(histories ?: return)
-                    val guidelines = Guider(lastTests).generateGuidelines()
-                    binding.txtGuidelines.text = guidelines
-                }
-            }, docRef)
-        }
+        firestoreService.readLastThreeHistories(object : HistoryCallback {
+            override fun onPostExecute(histories: List<HistoryItem>?) {
+                val lastTests = getHistoriesRelatedToLastItem(histories ?: return)
+                val guidelines = Guider(lastTests).generateGuidelines()
+                binding.txtGuidelines.text = guidelines
+            }
+        }, auth.currentUser?.uid.toString())
+
     }
 
     fun getHistoriesRelatedToLastItem(histories: List<HistoryItem>): List<HistoryItem> {
