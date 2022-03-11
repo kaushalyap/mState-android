@@ -8,16 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.preference.PreferenceManager
 import com.example.mstate.R
 import com.example.mstate.databinding.FragmentSignInEmailBinding
 import com.example.mstate.models.AppUser
 import com.example.mstate.services.FirestoreService
 import com.example.mstate.services.UserCallback
+import com.example.mstate.ui.activities.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+@SuppressLint("LogConditional")
 class SignInEmailFragment : Fragment() {
 
     private var _binding: FragmentSignInEmailBinding? = null
@@ -35,6 +36,8 @@ class SignInEmailFragment : Fragment() {
     }
 
     private fun init() {
+        val mainActivity = activity as MainActivity
+        mainActivity.hideFabBottomAppBar()
         firestoreService = FirestoreService()
         binding.btnSignIn.setOnClickListener {
             val email = binding.editEmail.text.toString()
@@ -52,24 +55,17 @@ class SignInEmailFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "signInWithEmail:success")
-                    val sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(requireContext())
-                    val dRef = sharedPreferences.getString(
-                        requireContext().resources.getString(R.string.pref_user_doc_ref),
-                        ""
-                    ).toString()
                     firestoreService.readUser(object : UserCallback {
                         override fun onPostExecute(dRef: String) {}
 
-                        @SuppressLint("LogConditional")
                         override fun onPostExecute(user: AppUser) {
                             Log.d(TAG, "profileComplete = ${user.profileComplete}")
-                            if (user.profileComplete)
+                            if (!user.profileComplete)
                                 findNavController().navigate(R.id.action_signInEmail_to_editProfile)
                             else
                                 findNavController().navigate(R.id.action_signInEmail_to_main)
                         }
-                    }, dRef)
+                    }, auth.currentUser?.uid.toString())
                 } else {
                     Log.w(SignInFragment.TAG, "signInWithEmail:failure", task.exception)
                     binding.lbError.visibility = View.VISIBLE

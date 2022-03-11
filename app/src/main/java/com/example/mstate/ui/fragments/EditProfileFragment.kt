@@ -1,9 +1,7 @@
 package com.example.mstate.ui.fragments
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +22,7 @@ import com.google.firebase.ktx.Firebase
 class EditProfileFragment : Fragment() {
 
     private var _binding: FragmentEditProfileBinding? = null
-    private val binding get() = _binding!!
+    internal val binding get() = _binding!!
     private val args: EditProfileFragmentArgs by navArgs()
     private lateinit var auth: FirebaseAuth
     private lateinit var firestoreService: FirestoreService
@@ -49,10 +47,24 @@ class EditProfileFragment : Fragment() {
         if (signedInWithGoogle)
             binding.editName.setText(auth.currentUser?.displayName)
 
+        firestoreService.readUser(object : UserCallback {
+            override fun onPostExecute(dRef: String) {}
+
+            override fun onPostExecute(user: AppUser) {
+                binding.editName.setText(user.name)
+                binding.editAddress.setText(user.address)
+                binding.editMobileNo.setText(user.mobileNo)
+                binding.editGuardian.setText(user.guardian?.fullName)
+                binding.editGuardianMobileNo.setText(user.guardian?.mobileNo)
+            }
+        }, auth.currentUser?.uid.toString())
+
+
         binding.btnDone.setOnClickListener {
 
+            val uid = auth.currentUser?.uid.toString()
             val fullName = binding.editName.text.toString()
-            val email = auth.currentUser?.email
+            val email = auth.currentUser?.email.toString()
             val address = binding.editAddress.text.toString()
             val mobileNo = binding.editMobileNo.text.toString()
             val guardianName = binding.editGuardian.text.toString()
@@ -68,37 +80,19 @@ class EditProfileFragment : Fragment() {
             if (isValid) {
                 val guardian = Guardian(guardianName, guardianMobileNo)
                 val user = AppUser(
-                    auth.currentUser?.uid,
+                    uid,
                     fullName,
-                    email ?: return@setOnClickListener, false, address, mobileNo, guardian, null
+                    email, true, address, mobileNo, guardian, null
                 )
 
-                if (formName == resources.getString(R.string.create_profile)) {
-                    firestoreService.addUser(object : UserCallback {
-                        override fun onPostExecute(dRef: String) {
-                            val sharedPref =
-                                activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-                            with(sharedPref.edit()) {
-                                putString(
-                                    getString(R.string.pref_user_doc_ref),
-                                    dRef
-                                )
-                                apply()
-                            }
-                            Log.d(TAG, "dRef = $dRef")
-                            findNavController().navigate(R.id.action_editProfile_to_main)
-                        }
-
-                        override fun onPostExecute(user: AppUser) {}
-                    }, user)
-                } else {
-
-                    firestoreService.updateUser(
-                        auth.currentUser?.uid ?: return@setOnClickListener,
-                        user
-                    )
+                firestoreService.updateUser(
+                    uid,
+                    user
+                )
+                if (formName == resources.getString(R.string.create_profile))
+                    findNavController().navigate(R.id.action_editProfile_to_main)
+                else
                     findNavController().popBackStack()
-                }
             } else
                 binding.lbError.visibility = View.VISIBLE
         }

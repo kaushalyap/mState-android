@@ -9,6 +9,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.findNavController
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.example.mstate.R
@@ -22,7 +24,8 @@ import permissions.dispatcher.ktx.PermissionsRequester
 import permissions.dispatcher.ktx.constructPermissionsRequest
 
 @SuppressLint("LogConditional")
-class SettingsFragment : PreferenceFragmentCompat() {
+class SettingsFragment : PreferenceFragmentCompat(),
+    PreferenceManager.OnPreferenceTreeClickListener {
 
     private lateinit var callPermissionsRequester: PermissionsRequester
     private lateinit var smsPermissionsRequester: PermissionsRequester
@@ -35,7 +38,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun init() {
+        auth = Firebase.auth
         setSharedPreferenceChangeListeners()
+    }
+
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+        when (preference.key) {
+            resources.getString(R.string.pref_disclaimer) -> findNavController().navigate(R.id.action_settings_to_disclaimer)
+            resources.getString(R.string.pref_about) -> findNavController().navigate(R.id.action_settings_to_about)
+            resources.getString(R.string.pref_sign_out) -> {
+                auth.signOut()
+                findNavController().navigate(R.id.action_global_signIn)
+            }
+        }
+        return true
     }
 
     private fun setSharedPreferenceChangeListeners() {
@@ -87,7 +103,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val settings = Settings(smsOn, callOn)
 
         firestoreService = FirestoreService()
-        auth = Firebase.auth
+
         firestoreService.updateSettings(auth.uid.toString(), settings)
     }
 
@@ -167,4 +183,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
     companion object {
         const val TAG: String = "SettingsFragment"
     }
+
+
 }

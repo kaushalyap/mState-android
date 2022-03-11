@@ -17,16 +17,10 @@
             android:id="@+id/action_main_to_history"
             app:destination="@id/historyFragment" />
         <action
-            android:id="@+id/action_main_to_about"
-            app:destination="@id/aboutFragment" />
-        <action
-            android:id="@+id/action_main_to_disclaimer"
-            app:destination="@id/disclaimerFragment" />
-        <action
             android:id="@+id/action_main_to_settings"
             app:destination="@id/settingsFragment" />
         <action
-            android:id="@+id/action_mainFragment_to_profileFragment"
+            android:id="@+id/action_main_to_profile"
             app:destination="@id/profileFragment" />
     </fragment>
     <fragment
@@ -97,8 +91,14 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.mstate.ui.fragments.SettingsFragment"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        android:label="fragment_settings">
+        <action
+            android:id="@+id/action_settings_to_about"
+            app:destination="@id/aboutFragment" />
+        <action
+            android:id="@+id/action_settings_to_disclaimer"
+            app:destination="@id/disclaimerFragment" />
+    </fragment>
     <action
         android:id="@+id/action_global_signIn"
         app:destination="@id/signInFragment" />

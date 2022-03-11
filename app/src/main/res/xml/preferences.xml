@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory app:title="Automated Response">
 
         <SwitchPreferenceCompat
@@ -14,4 +15,32 @@
             app:summary="@string/pref_call_summary"
             app:title="Call" />
     </PreferenceCategory>
+
+    <Preference
+        android:enabled="false"
+        app:title="" />
+
+    <Preference
+        android:enabled="true"
+        android:key="@string/pref_disclaimer"
+        android:selectable="true"
+        android:summary="@string/pref_disclaimer_summary"
+        android:title="@string/disclaimer" />
+
+
+    <Preference
+        android:enabled="true"
+        android:key="@string/pref_about"
+        android:selectable="true"
+        android:summary="@string/pref_about_summary"
+        android:title="@string/about" />
+
+
+    <Preference
+        android:enabled="true"
+        android:key="@string/pref_sign_out"
+        android:selectable="true"
+        android:summary="@string/pref_sign_out_summary"
+        android:title="@string/sign_out" />
+
 </PreferenceScreen>

@@ -65,14 +65,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.profile -> navController.navigate(R.id.action_main_to_profile)
             R.id.history -> navController.navigate(R.id.action_main_to_history)
             R.id.settings -> navController.navigate(R.id.action_main_to_settings)
-            R.id.disclaimer -> navController.navigate(R.id.action_main_to_disclaimer)
-            R.id.about -> navController.navigate(R.id.action_main_to_about)
-            R.id.signOut -> {
-                Firebase.auth.signOut()
-                navController.navigate(R.id.action_global_signIn)
-            }
         }
         return true
     }

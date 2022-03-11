@@ -46,11 +46,14 @@ class HistoryFragment : Fragment() {
         auth = Firebase.auth
         firestoreService.readHistory(object : HistoryCallback {
             override fun onPostExecute(histories: List<HistoryItem>?) {
-                adapter = HistoryAdapter(histories!!)
-                binding.recyclerView.adapter = adapter
+                if (histories?.isNotEmpty() ?: return) {
+                    adapter = HistoryAdapter(histories)
+                    binding.recyclerView.adapter = adapter
+                } else
+                    binding.txtEmpty.visibility = View.VISIBLE
+
             }
         }, auth.currentUser?.uid.toString())
-
     }
 
     override fun onDestroyView() {

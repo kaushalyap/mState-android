@@ -17,6 +17,16 @@
         android:textSize="30sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/txtEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/you_have_not_taken_any_tests_yet"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

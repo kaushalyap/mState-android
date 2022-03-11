@@ -13,6 +13,7 @@ import com.example.mstate.databinding.FragmentSignUpEmailBinding
 import com.example.mstate.models.AppUser
 import com.example.mstate.services.FirestoreService
 import com.example.mstate.services.UserCallback
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -79,12 +80,14 @@ class SignUpEmailFragment : Fragment() {
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     binding.lbError.visibility = View.VISIBLE
-                    val errorMessage: String =
-                        if (task.exception.toString().contains("email address is already in use"))
-                            "Email address is already in use"
-                        else
-                            "No internet!"
-                    binding.lbError.text = errorMessage
+                    if (task.exception.toString().contains("email address is already in use"))
+                        Snackbar.make(
+                            binding.root,
+                            "Email address is already in use",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    else
+                        Snackbar.make(binding.root, "No internet!", Snackbar.LENGTH_SHORT).show()
                 }
             }
     }
