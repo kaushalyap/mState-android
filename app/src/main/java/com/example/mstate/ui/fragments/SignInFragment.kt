@@ -1,5 +1,6 @@
 package com.example.mstate.ui.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,8 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import com.example.mstate.R
 import com.example.mstate.databinding.FragmentSignInBinding
+import com.example.mstate.models.AppUser
 import com.example.mstate.services.FirestoreService
 import com.example.mstate.services.UserCallback
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -90,21 +93,54 @@ class SignInFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                    firestoreService.doesUserAlreadyExists(object : UserCallback {
-                        override fun onCallback(dRef: String) {
-                            if (dRef.isEmpty()) {
+                    val user = AppUser(
+                        auth.currentUser?.uid,
+                        auth.currentUser?.displayName,
+                        auth.currentUser?.email!!,
+                        false,
+                        null,
+                        null,
+                        null,
+                        null
+                    )
+                    firestoreService.addUser(object : UserCallback {
+                        override fun onPostExecute(dRef: String) {
+                            val sharedPref =
+                                activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+                            with(sharedPref.edit()) {
+                                putString(
+                                    getString(R.string.pref_user_doc_ref),
+                                    dRef
+                                )
+                                apply()
+                            }
+                            Log.d(EditProfileFragment.TAG, "dRef = $dRef")
+                        }
+
+                        override fun onPostExecute(user: AppUser) {}
+                    }, user)
+                    val sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(requireContext())
+                    val dRef = sharedPreferences.getString(
+                        requireContext().resources.getString(R.string.pref_user_doc_ref),
+                        ""
+                    ).toString()
+                    firestoreService.readUser(object : UserCallback {
+                        override fun onPostExecute(dRef: String) {}
+
+                        override fun onPostExecute(user: AppUser) {
+                            if (!user.profileComplete) {
                                 findNavController().navigate(R.id.action_signIn_to_editProfile)
                             } else {
                                 findNavController().navigate(R.id.action_signIn_to_main)
                                 Toast.makeText(
                                     requireContext(),
-                                    "Welcome ${user?.displayName}!",
+                                    "Welcome ${user.name}!",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }
-                    }, user?.email!!)
+                    }, dRef)
 
                 } else {
                     // If sign in fails, display a message to the user.

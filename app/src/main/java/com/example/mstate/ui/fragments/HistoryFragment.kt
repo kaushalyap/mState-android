@@ -49,7 +49,7 @@ class HistoryFragment : Fragment() {
 
         if (docRef != null) {
             firestoreService.readHistory(object : HistoryCallback {
-                override fun onCallback(histories: List<HistoryItem>?) {
+                override fun onPostExecute(histories: List<HistoryItem>?) {
                     adapter = HistoryAdapter(histories!!)
                     binding.recyclerView.adapter = adapter
                 }

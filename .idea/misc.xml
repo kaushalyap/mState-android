@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/drawable/ic_btn_google_light_normal.xml" value="0.3345" />
         <entry key="app/src/main/res/drawable/ic_contact_24.xml" value="0.3345" />
         <entry key="app/src/main/res/drawable/ic_history_24.xml" value="0.237" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.237" />
         <entry key="app/src/main/res/drawable/ic_message_24.xml" value="0.3345" />
         <entry key="app/src/main/res/drawable/ic_mindfulness.xml" value="0.2515" />
         <entry key="app/src/main/res/drawable/ic_settings_24.xml" value="0.237" />
@@ -41,6 +42,8 @@
         <entry key="app/src/main/res/layout/item_question.xml" value="0.4008152173913043" />
         <entry key="app/src/main/res/layout/layout_answers.xml" value="0.40989583333333335" />
         <entry key="app/src/main/res/menu/bottom_app_bar.xml" value="0.23072916666666668" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.237" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.237" />
         <entry key="app/src/main/res/xml/preferences.xml" value="0.37817028985507245" />
       </map>
     </option>

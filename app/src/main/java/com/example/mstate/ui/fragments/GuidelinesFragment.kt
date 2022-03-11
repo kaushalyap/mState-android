@@ -50,7 +50,7 @@ class GuidelinesFragment : Fragment() {
         firestoreService = FirestoreService()
         if (docRef != null) {
             firestoreService.readLastThreeHistories(object : HistoryCallback {
-                override fun onCallback(histories: List<HistoryItem>?) {
+                override fun onPostExecute(histories: List<HistoryItem>?) {
                     val lastTests = getHistoriesRelatedToLastItem(histories ?: return)
                     val guidelines = Guider(lastTests).generateGuidelines()
                     binding.txtGuidelines.text = guidelines

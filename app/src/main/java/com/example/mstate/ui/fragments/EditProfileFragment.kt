@@ -69,14 +69,15 @@ class EditProfileFragment : Fragment() {
             if (isValid) {
                 val guardian = Guardian(guardianName, guardianMobileNo)
                 val user = AppUser(
+                    auth.currentUser?.uid,
                     fullName,
-                    email ?: return@setOnClickListener, address, mobileNo, guardian, null
+                    email ?: return@setOnClickListener, false, address, mobileNo, guardian, null
                 )
 
                 if (formName == "Create Profile") {
                     firestoreService.addUser(object : UserCallback {
                         @SuppressLint("LogConditional")
-                        override fun onCallback(dRef: String) {
+                        override fun onPostExecute(dRef: String) {
                             val sharedPref =
                                 activity?.getPreferences(Context.MODE_PRIVATE) ?: return
                             with(sharedPref.edit()) {
@@ -89,6 +90,8 @@ class EditProfileFragment : Fragment() {
                             Log.d(TAG, "dRef = $dRef")
                             findNavController().navigate(R.id.action_editProfile_to_main)
                         }
+
+                        override fun onPostExecute(user: AppUser) {}
                     }, user)
                 } else {
                     val sharedPreferences =

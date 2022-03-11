@@ -9,7 +9,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.mstate.R
 import com.example.mstate.databinding.ActivityMainBinding
-import com.example.mstate.services.FirestoreService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -20,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
-    private lateinit var firestoreService: FirestoreService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,13 +28,11 @@ class MainActivity : AppCompatActivity() {
     private fun init() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        firestoreService = FirestoreService()
         binding.fabCheck.setOnClickListener {
             navController.navigate(R.id.action_main_to_questionnaire)
         }
 
         initNavigation()
-
         // Navigate to SigIn if not already authenticated
         auth = Firebase.auth
         if (auth.currentUser?.email == null) {

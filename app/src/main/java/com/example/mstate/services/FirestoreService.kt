@@ -14,50 +14,53 @@ class FirestoreService {
 
     private val db = Firebase.firestore
 
-    fun doesUserAlreadyExists(callback: UserCallback, email: String) {
-        db.collection("Users")
-            .whereEqualTo("email", email).get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val docRef = document.id
-                    callback.onCallback(docRef)
-                    Log.d(TAG, "docRef = $docRef")
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding User document", e)
-            }
-    }
-
-
     fun addUser(callback: UserCallback, appUser: AppUser) {
-        var docRef: String
+
+        var docRef = ""
         var userExists: Int
 
         db.collection("Users")
             .whereEqualTo("email", appUser.email).get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    docRef = document.id
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result) {
+                        Log.d(TAG, document.id + " => " + document.data)
+                        docRef = document.id
+                    }
                     userExists = if (docRef.isNotEmpty()) 1 else 0
-                    callback.onCallback(docRef)
 
                     if (userExists == 0) {
                         db.collection("Users")
-                            .add(appUser)
+                            .document(appUser.uid!!)
+                            .set(appUser)
                             .addOnSuccessListener { documentReference ->
                                 Log.d(TAG, "User document added!")
                                 Log.d(
                                     TAG,
-                                    "DocumentSnapshot added with ID: ${documentReference.id}"
+                                    "DocumentSnapshot added with ID:"
                                 )
-
+                                callback.onPostExecute(docRef)
                             }
                             .addOnFailureListener { e ->
                                 Log.w(TAG, "Error adding User document", e)
                             }
                     }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.exception)
                 }
+            }
+    }
+
+
+    fun readUser(callbackReadUser: UserCallback, dRef: String) {
+        db.collection("Users").document(dRef).get()
+            .addOnSuccessListener { document ->
+                val name = document.getString("name")
+                val email = document.getString("email")
+                val isProfileComplete = document.getBoolean("profileComplete")
+                val user = AppUser(null, name, email!!, isProfileComplete!!, null, null, null, null)
+                callbackReadUser.onPostExecute(user)
+                Log.d(TAG, "profileComplete = $isProfileComplete")
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding User document", e)
@@ -119,7 +122,7 @@ class FirestoreService {
                     Log.d(TAG, "$histories")
                 }
 
-                callback.onCallback(histories)
+                callback.onPostExecute(histories)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting History documents.", exception)
@@ -145,7 +148,7 @@ class FirestoreService {
                     Log.d(TAG, "$histories")
                 }
 
-                callback.onCallback(histories)
+                callback.onPostExecute(histories)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting History documents.", exception)

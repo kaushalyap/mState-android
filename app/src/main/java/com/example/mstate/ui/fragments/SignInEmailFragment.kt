@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import com.example.mstate.R
 import com.example.mstate.databinding.FragmentSignInEmailBinding
+import com.example.mstate.models.AppUser
 import com.example.mstate.services.FirestoreService
 import com.example.mstate.services.UserCallback
 import com.google.firebase.auth.FirebaseAuth
@@ -37,9 +39,9 @@ class SignInEmailFragment : Fragment() {
             val email = binding.editEmail.text.toString()
             val password = binding.editPassword.text.toString()
             if (email.isEmpty() || password.isEmpty())
-                signInWithEmail(email, password)
-            else
                 binding.lbError.text = "Email / Password cannot be empty!"
+            else
+                signInWithEmail(email, password)
         }
     }
 
@@ -49,17 +51,23 @@ class SignInEmailFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "signInWithEmail:success")
-                    val signedInEmail = auth.currentUser?.email
-                    firestoreService = FirestoreService()
-                    firestoreService.doesUserAlreadyExists(object : UserCallback {
-                        override fun onCallback(dRef: String) {
-                            Log.d(TAG, "dRef = $dRef")
-                            if (dRef.isEmpty())
-                                findNavController().navigate(R.id.action_signIn_to_editProfile)
+                    val sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(requireContext())
+                    val dRef = sharedPreferences.getString(
+                        requireContext().resources.getString(R.string.pref_user_doc_ref),
+                        ""
+                    ).toString()
+                    firestoreService.readUser(object : UserCallback {
+                        override fun onPostExecute(dRef: String) {}
+
+                        override fun onPostExecute(user: AppUser) {
+                            Log.d(TAG, "profileComplete = ${user.profileComplete}")
+                            if (user.profileComplete)
+                                findNavController().navigate(R.id.action_signInEmail_to_editProfile)
                             else
-                                findNavController().navigate(R.id.action_signIn_to_main)
+                                findNavController().navigate(R.id.action_signInEmail_to_main)
                         }
-                    }, signedInEmail!!)
+                    }, dRef)
                 } else {
                     Log.w(SignInFragment.TAG, "signInWithEmail:failure", task.exception)
                     binding.lbError.visibility = View.VISIBLE

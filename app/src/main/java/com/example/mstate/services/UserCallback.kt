@@ -1,5 +1,8 @@
 package com.example.mstate.services
 
+import com.example.mstate.models.AppUser
+
 interface UserCallback {
-    fun onCallback(dRef: String)
+    fun onPostExecute(dRef: String)
+    fun onPostExecute(user: AppUser)
 }
