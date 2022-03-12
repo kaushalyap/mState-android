@@ -6,16 +6,16 @@ import com.example.mstate.models.AppUser
 import com.example.mstate.models.Guardian
 import com.example.mstate.models.HistoryItem
 import com.example.mstate.models.Settings
-import com.google.firebase.firestore.Source
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+
 
 
 @SuppressLint("LogConditional")
 class FirestoreService {
 
     private val db = Firebase.firestore
-
 
     fun addUser(callback: UserCallback, appUser: AppUser) {
         db.collection(USER_COLLECTION)
@@ -35,7 +35,7 @@ class FirestoreService {
 
                     if (userExists == 0) {
                         db.collection(USER_COLLECTION)
-                            .document(appUser.uid ?: return@addOnCompleteListener)
+                            .document(appUser.uid.toString())
                             .set(appUser)
                             .addOnSuccessListener {
                                 Log.d(TAG, "User document added!")
@@ -44,18 +44,20 @@ class FirestoreService {
                             .addOnFailureListener { e ->
                                 Log.w(TAG, "Error adding User document", e)
                             }
-                    }
+                    } else
+                        Log.d(TAG, "User already exists!")
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.exception)
                 }
             }
     }
 
-
     fun readUser(callbackReadUser: UserCallback, uid: String) {
-        db.collection(USER_COLLECTION).document(uid).get(Source.CACHE)
+        db.collection(USER_COLLECTION).document(uid).get()
             .addOnCompleteListener { task ->
+
                 if (task.isSuccessful) {
+
                     val document = task.result
                     val name = document.getString("name")
                     val email = document.getString("email")
@@ -64,27 +66,27 @@ class FirestoreService {
                     val isProfileComplete = document.getBoolean("profileComplete")
                     val guardianName = document.getString("guardian.fullName").toString()
                     val guardianMobile = document.getString("guardian.mobileNo").toString()
-                    val smsOn =
-                        document.getBoolean("settings.smsOn") ?: return@addOnCompleteListener
-                    val callOn =
-                        document.getBoolean("settings.callOn") ?: return@addOnCompleteListener
+                    val smsOn = document.getBoolean("settings.smsOn")
+                    val callOn = document.getBoolean("settings.callOn")
 
                     val guardian = Guardian(guardianName, guardianMobile)
-                    val settings = Settings(smsOn, callOn)
-                    val user = AppUser(
-                        null,
-                        name,
-                        email ?: return@addOnCompleteListener,
-                        isProfileComplete ?: return@addOnCompleteListener,
-                        address,
-                        mobileNo,
-                        guardian,
-                        settings
-                    )
-                    callbackReadUser.onPostExecute(user)
+                    val settings = smsOn?.let { callOn?.let { it1 -> Settings(it, it1) } }
+                    val user = isProfileComplete?.let {
+                        AppUser(
+                            null,
+                            name,
+                            email!!,
+                            it,
+                            address,
+                            mobileNo,
+                            guardian,
+                            settings
+                        )
+                    }
+                    user?.let { callbackReadUser.onPostExecute(it) }
                     Log.d(TAG, "profileComplete = $isProfileComplete")
                 } else {
-                    Log.d(TAG, "Reading user failed")
+                    Log.d(TAG, "Reading user failed: ${task.exception}")
                 }
 
             }
@@ -117,9 +119,8 @@ class FirestoreService {
             .addOnFailureListener { e -> Log.w(TAG, "Error updating User document", e) }
     }
 
-
     fun addHistoryItem(uid: String, item: HistoryItem) {
-        Log.d(TAG, "${item.date} ${item.time} ${item.questionnaireType} ${item.score}")
+        Log.d(TAG, "${item.timestamp} ${item.questionnaireType} ${item.score}")
         db.collection(USER_COLLECTION).document(uid)
             .collection(HISTORY_COLLECTION).add(item)
             .addOnSuccessListener { documentReference ->
@@ -133,53 +134,57 @@ class FirestoreService {
 
     fun readHistory(callback: HistoryCallback, uid: String) {
         db.collection(USER_COLLECTION).document(uid).collection(HISTORY_COLLECTION)
-            .get(Source.CACHE)
+            .orderBy(TIMESTAMP_FIELD, Query.Direction.DESCENDING)
+            .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val histories: MutableList<HistoryItem> = mutableListOf()
-                    val result = task.result
-                    for (document in result) {
-                        Log.d(TAG, "${document.id} => ${document.data}")
-                        histories.add(
-                            HistoryItem(
-                                document.getString("date").toString(),
-                                document.getString("time").toString(),
-                                document.getString("questionnaireType").toString(),
-                                document.getDouble("score")?.toInt() ?: return@addOnCompleteListener
+                    for (document in task.result) {
+                        if (document.exists()) {
+                            Log.d(TAG, "${document.id} => ${document.data}")
+                            histories.add(
+                                HistoryItem(
+                                    document.getString(TIMESTAMP_FIELD).toString(),
+                                    document.getString(QUESTION_TYPE_FIELD).toString(),
+                                    document.getDouble(SCORE_FIELD)?.toInt()
+                                )
                             )
-                        )
+                        }
                         Log.d(TAG, "$histories")
                     }
 
                     callback.onPostExecute(histories)
                 } else
-                    Log.d(TAG, "Reading histories failed")
+                    Log.d(TAG, "Reading histories failed: ${task.exception}")
             }
 
     }
 
     fun readLastThreeHistories(callback: HistoryCallback, uid: String) {
         db.collection(USER_COLLECTION).document(uid).collection(HISTORY_COLLECTION)
+            .orderBy(TIMESTAMP_FIELD, Query.Direction.DESCENDING)
             .limit(3)
-            .get(Source.CACHE)
+            .get()
             .addOnCompleteListener { task ->
                 val histories: MutableList<HistoryItem> = mutableListOf()
                 if (task.isSuccessful) {
                     for (document in task.result) {
-                        Log.d(TAG, "${document.id} => ${document.data}")
-                        histories.add(
-                            HistoryItem(
-                                document.getString("date").toString(),
-                                document.getString("time").toString(),
-                                document.getString("questionnaireType").toString(),
-                                document.getDouble("score")?.toInt() ?: return@addOnCompleteListener
+                        if (document.exists()) {
+                            Log.d(TAG, "${document.id} => ${document.data}")
+                            histories.add(
+                                HistoryItem(
+                                    document.getString(TIMESTAMP_FIELD).toString(),
+                                    document.getString(QUESTION_TYPE_FIELD).toString(),
+                                    document.getDouble(SCORE_FIELD)?.toInt()
+                                )
                             )
-                        )
-                        Log.d(TAG, "$histories")
+                            Log.d(TAG, "$histories")
+                        } else
+                            Log.d(TAG, "No any history  documents!")
                     }
                     callback.onPostExecute(histories)
                 } else
-                    Log.d(TAG, "Reading last three histories failed")
+                    Log.d(TAG, "Reading last three histories failed: ${task.exception}")
             }
     }
 
@@ -187,5 +192,10 @@ class FirestoreService {
         const val TAG: String = "FirebaseService"
         const val USER_COLLECTION: String = "Users"
         const val HISTORY_COLLECTION: String = "History"
+        const val TIMESTAMP_FIELD: String = "timestamp"
+        const val QUESTION_TYPE_FIELD: String = "questionnaireType"
+        const val SCORE_FIELD: String = "score"
+
+
     }
 }

@@ -7,6 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mstate.R
 import com.example.mstate.models.HistoryItem
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.*
 
 class HistoryAdapter(private val dataSet: List<HistoryItem>) :
     RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
@@ -16,7 +19,6 @@ class HistoryAdapter(private val dataSet: List<HistoryItem>) :
         val lbTime: TextView
         val lbType: TextView
         val lbScore: TextView
-
         init {
             lbDate = view.findViewById(R.id.lbDate)
             lbTime = view.findViewById(R.id.lbTime)
@@ -29,17 +31,24 @@ class HistoryAdapter(private val dataSet: List<HistoryItem>) :
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.item_history, viewGroup, false)
 
+        val stamp = Timestamp(System.currentTimeMillis())
+        val date = Date(stamp.time)
+        println(date)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        val stamp = Timestamp(System.currentTimeMillis())
+        val date = Date(stamp.time)
+        val sdf = SimpleDateFormat("dd MMM yyyy,hh:mm a", Locale.getDefault())
+        sdf.timeZone = TimeZone.getTimeZone("Asia/Kolkata")
+        val split = sdf.format(date).split(',')
 
-        viewHolder.lbDate.text = dataSet[position].date
-        viewHolder.lbTime.text = dataSet[position].time
+        viewHolder.lbDate.text = split[0]
+        viewHolder.lbTime.text = split[1]
         viewHolder.lbType.text = dataSet[position].questionnaireType
         viewHolder.lbScore.text = dataSet[position].score.toString()
     }
 
     override fun getItemCount(): Int = dataSet.size
-
 }

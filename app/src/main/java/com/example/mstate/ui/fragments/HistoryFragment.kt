@@ -51,7 +51,6 @@ class HistoryFragment : Fragment() {
                     binding.recyclerView.adapter = adapter
                 } else
                     binding.txtEmpty.visibility = View.VISIBLE
-
             }
         }, auth.currentUser?.uid.toString())
     }

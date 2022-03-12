@@ -1,6 +1,5 @@
 package com.example.mstate.ui.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +13,8 @@ import com.example.mstate.databinding.FragmentEpdsBinding
 import com.example.mstate.models.*
 import com.example.mstate.services.FirestoreService
 import com.google.firebase.auth.FirebaseAuth
-import java.text.SimpleDateFormat
-import java.util.*
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class EpdsFragment : Fragment() {
 
@@ -59,21 +58,18 @@ class EpdsFragment : Fragment() {
     }
 
     private fun saveTestResult() {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        val docRef = sharedPref?.getString(getString(R.string.pref_user_doc_ref), null)
-        val dateTime: String =
-            SimpleDateFormat("dd MMMM yyyy,h:mm a", Locale.getDefault()).format(Date())
-        val splitDateTime = dateTime.split(',')
+        val timestamp = (System.currentTimeMillis() / 100).toString()
         val historyItem = HistoryItem(
-            splitDateTime[0],
-            splitDateTime[1],
+            timestamp,
             QuestionnaireType.EPDS.name,
             epdsScoring.getScore()
         )
         firestoreService = FirestoreService()
+        firebaseAuth = Firebase.auth
 
-        if (docRef != null) {
-            firestoreService.addHistoryItem(docRef, historyItem)
+        if (firebaseAuth.currentUser?.uid != null) {
+            val uid = firebaseAuth.currentUser?.uid.toString()
+            firestoreService.addHistoryItem(uid, historyItem)
         } else {
             firebaseAuth.signOut()
             findNavController().navigate(R.id.action_global_signIn)

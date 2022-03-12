@@ -4,44 +4,52 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.telephony.SmsManager
 import android.util.Log
-import androidx.preference.PreferenceManager
-import com.example.mstate.R
+import com.example.mstate.services.FirestoreService
+import com.example.mstate.services.UserCallback
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class Telephony {
+    private val firestoreService = FirestoreService()
+    private val auth = Firebase.auth
 
     fun makeCall(activity: Activity) {
-        if (getEmergencyContact(activity.baseContext) != "") {
-            val intent = Intent(
-                Intent.ACTION_CALL,
-                Uri.parse("tel:${getEmergencyContact(activity.baseContext)}")
-            )
-            activity.startActivity(intent)
-        } else {
-            Log.d(TAG, "Emergency contact is empty!")
-        }
+        firestoreService.readUser(object : UserCallback {
+            override fun onPostExecute(dRef: String) {}
+
+            override fun onPostExecute(user: AppUser) {
+                if (user.guardian?.mobileNo != null) {
+                    val intent = Intent(
+                        Intent.ACTION_CALL,
+                        Uri.parse("tel:${user.guardian.mobileNo}")
+                    )
+                    activity.startActivity(intent)
+                } else {
+                    Log.d(TAG, "Emergency contact is empty!")
+
+                }
+            }
+        }, auth.currentUser?.uid.toString())
     }
 
     fun sendSMS(context: Context) {
-        val emergencyContactNo = getEmergencyContact(context)
-        val smsManager: SmsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            context.getSystemService(SmsManager::class.java)
-        } else {
-            SmsManager.getDefault()
-        }
-        if (emergencyContactNo != "")
-            smsManager.sendTextMessage(emergencyContactNo, null, MESSAGE_BODY, null, null)
+        firestoreService.readUser(object : UserCallback {
+            override fun onPostExecute(dRef: String) {}
 
-        Log.d(TAG, "SMS sent!")
+            override fun onPostExecute(user: AppUser) {
+                val smsManager = SmsManager.getDefault()
+
+                if (user.guardian?.mobileNo != null) {
+                    val emergencyContactNo = user.guardian.mobileNo
+                    smsManager.sendTextMessage(emergencyContactNo, null, MESSAGE_BODY, null, null)
+                    Log.d(TAG, "SMS sent!")
+                }
+            }
+        }, auth.currentUser?.uid.toString())
     }
 
-    private fun getEmergencyContact(context: Context): String {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        return sharedPreferences.getString(context.getString(R.string.pref_emergency_contact), "")
-            .toString()
-    }
 
     companion object {
         const val TAG: String = "Telephony"

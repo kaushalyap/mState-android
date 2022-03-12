@@ -34,9 +34,9 @@ class GuidelinesFragment : Fragment() {
     }
 
     private fun init() {
+        setGuidelines()
         binding.btn.setOnClickListener {
             findNavController().popBackStack()
-            setGuidelines()
             respondAutomatically()
         }
     }
@@ -51,25 +51,26 @@ class GuidelinesFragment : Fragment() {
         firestoreService = FirestoreService()
         firestoreService.readLastThreeHistories(object : HistoryCallback {
             override fun onPostExecute(histories: List<HistoryItem>?) {
-                val lastTests = getHistoriesRelatedToLastItem(histories ?: return)
-                val guidelines = Guider(lastTests).generateGuidelines()
-                binding.txtGuidelines.text = guidelines
+                if (histories != null) {
+                    val lastTests = getHistoriesRelatedToLastItem(histories)
+                    val guidelines = Guider(lastTests).generateGuidelines()
+                    binding.txtGuidelines.text = guidelines
+                }
             }
         }, auth.currentUser?.uid.toString())
-
     }
 
     fun getHistoriesRelatedToLastItem(histories: List<HistoryItem>): List<HistoryItem> {
         val lastQuestionnaireType = histories[0].questionnaireType
         val lastTests = mutableListOf<HistoryItem>()
 
-        if (lastQuestionnaireType == QuestionnaireType.PHQ.name) {
+        if (lastQuestionnaireType == QuestionnaireType.PHQ9.name) {
             for (item in histories)
-                if (item.questionnaireType == QuestionnaireType.PHQ.name)
+                if (item.questionnaireType == QuestionnaireType.PHQ9.name)
                     lastTests.add(item)
         } else {
             for (item in histories)
-                if (item.questionnaireType == QuestionnaireType.PHQ.name)
+                if (item.questionnaireType == QuestionnaireType.PHQ9.name)
                     lastTests.add(item)
         }
         return lastTests

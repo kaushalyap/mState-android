@@ -1,6 +1,5 @@
 package com.example.mstate.ui.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +13,8 @@ import com.example.mstate.databinding.FragmentPhqBinding
 import com.example.mstate.models.*
 import com.example.mstate.services.FirestoreService
 import com.google.firebase.auth.FirebaseAuth
-import java.text.SimpleDateFormat
-import java.util.*
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class Phq9Fragment : Fragment() {
 
@@ -47,7 +46,7 @@ class Phq9Fragment : Fragment() {
                 if (diagnosis != Phq9DepressionLevels.Undefined.disorderName && diagnosis != Phq9DepressionLevels.Not.disorderName) {
                     val action = Phq9FragmentDirections.actionPhqToDepressed(
                         diagnosis,
-                        QuestionnaireType.PHQ.name
+                        QuestionnaireType.PHQ9.name
                     )
                     findNavController().navigate(action)
                 } else
@@ -57,21 +56,18 @@ class Phq9Fragment : Fragment() {
     }
 
     private fun saveTestResult() {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        val docRef = sharedPref?.getString(getString(R.string.pref_user_doc_ref), null)
-        val dateTime: String =
-            SimpleDateFormat("dd MMMM yyyy,h:mm a", Locale.getDefault()).format(Date())
-        val splitDateTime = dateTime.split(',')
+        val timestamp = (System.currentTimeMillis() / 100).toString()
         val historyItem = HistoryItem(
-            splitDateTime[0],
-            splitDateTime[1],
-            QuestionnaireType.PHQ.name,
+            timestamp,
+            QuestionnaireType.PHQ9.name,
             phq9Scoring.getScore()
         )
         firestoreService = FirestoreService()
+        firebaseAuth = Firebase.auth
 
-        if (docRef != null) {
-            firestoreService.addHistoryItem(docRef, historyItem)
+        if (firebaseAuth.currentUser?.uid != null) {
+            val uid = firebaseAuth.currentUser?.uid.toString()
+            firestoreService.addHistoryItem(uid, historyItem)
         } else {
             firebaseAuth.signOut()
             findNavController().navigate(R.id.action_global_signIn)

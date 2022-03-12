@@ -1,8 +1,7 @@
 package com.example.mstate.models
 
 data class HistoryItem(
-    val date: String = "",
-    val time: String = "",
+    val timestamp: String = "",
     val questionnaireType: String = "",
-    val score: Int = -1,
+    val score: Int? = -1,
 )

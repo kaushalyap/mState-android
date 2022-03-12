@@ -94,7 +94,7 @@ class SignInFragment : Fragment() {
                     val user = AppUser(
                         auth.currentUser?.uid,
                         auth.currentUser?.displayName,
-                        auth.currentUser?.email ?: return@addOnCompleteListener,
+                        auth.currentUser?.email.toString(),
                         false,
                         null,
                         null,
@@ -126,7 +126,7 @@ class SignInFragment : Fragment() {
                                 ).show()
                             }
                         }
-                    }, uid ?: return@addOnCompleteListener)
+                    }, uid.toString())
 
                 } else {
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
