@@ -12,6 +12,7 @@ import com.example.mstate.adapters.Phd9Adapter
 import com.example.mstate.databinding.FragmentPhqBinding
 import com.example.mstate.models.*
 import com.example.mstate.services.FirestoreService
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -56,9 +57,8 @@ class Phq9Fragment : Fragment() {
     }
 
     private fun saveTestResult() {
-        val timestamp = (System.currentTimeMillis() / 100).toString()
         val historyItem = HistoryItem(
-            timestamp,
+            Timestamp.now(),
             QuestionnaireType.PHQ9.name,
             phq9Scoring.getScore()
         )

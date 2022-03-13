@@ -11,8 +11,6 @@ const val TAG: String = "AutomatedResponse"
 
 class AutomatedResponse {
 
-    private var responded = booleanArrayOf(false, false, false, false)
-
     @SuppressLint("LogConditional")
     fun respond(activity: Activity, context: Context) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -31,13 +29,10 @@ class AutomatedResponse {
         val telephony = Telephony()
         if (smsOn) {
             telephony.sendSMS(context)
-            responded[1] = true
-            Log.d(TAG, "SMS response : ${responded[1]}")
         }
         if (callOn) {
             telephony.makeCall(activity)
-            responded[2] = true
-            Log.d(TAG, "Call response : ${responded[2]}")
+            Log.d(TAG, "Message sent to your emergency contact!")
         }
     }
 }

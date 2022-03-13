@@ -43,8 +43,18 @@ class Telephony {
 
                 if (user.guardian?.mobileNo != null) {
                     val emergencyContactNo = user.guardian.mobileNo
-                    smsManager.sendTextMessage(emergencyContactNo, null, MESSAGE_BODY, null, null)
-                    Log.d(TAG, "SMS sent!")
+                    try {
+                        smsManager.sendTextMessage(
+                            emergencyContactNo,
+                            null,
+                            MESSAGE_BODY,
+                            null,
+                            null
+                        )
+                        Log.d(TAG, "SMS sent!")
+                    } catch (ex: Exception) {
+                        Log.e(TAG, ex.toString())
+                    }
                 }
             }
         }, auth.currentUser?.uid.toString())

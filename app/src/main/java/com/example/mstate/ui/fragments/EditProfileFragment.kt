@@ -47,29 +47,29 @@ class EditProfileFragment : Fragment() {
         if (signedInWithGoogle)
             binding.editName.setText(auth.currentUser?.displayName)
 
-        firestoreService.readUser(object : UserCallback {
-            override fun onPostExecute(dRef: String) {}
+        if (formName == "Update Profile") {
+            firestoreService.readUser(object : UserCallback {
+                override fun onPostExecute(dRef: String) {}
 
-            override fun onPostExecute(user: AppUser) {
-                binding.editName.setText(user.name)
-                binding.editAddress.setText(user.address)
-                binding.editMobileNo.setText(user.mobileNo)
-                binding.editGuardian.setText(user.guardian?.fullName)
-                binding.editGuardianMobileNo.setText(user.guardian?.mobileNo)
-            }
-        }, auth.currentUser?.uid.toString())
-
+                override fun onPostExecute(user: AppUser) {
+                    binding.editName.setText(user.name)
+                    binding.editAddress.setText(user.address)
+                    binding.editMobileNo.setText(user.mobileNo)
+                    binding.editGuardian.setText(user.guardian?.fullName)
+                    binding.editGuardianMobileNo.setText(user.guardian?.mobileNo)
+                }
+            }, auth.currentUser?.uid.toString())
+        }
 
         binding.btnDone.setOnClickListener {
 
             val uid = auth.currentUser?.uid.toString()
-            val fullName = binding.editName.text.toString()
+            val fullName = binding.editName.text.toString().trim()
             val email = auth.currentUser?.email.toString()
-            val address = binding.editAddress.text.toString()
+            val address = binding.editAddress.text.toString().trim()
             val mobileNo = binding.editMobileNo.text.toString()
-            val guardianName = binding.editGuardian.text.toString()
+            val guardianName = binding.editGuardian.text.toString().trim()
             val guardianMobileNo = binding.editGuardianMobileNo.text.toString()
-
 
             val isValid = fullName.isNotEmpty() and
                     address.isNotEmpty() and
@@ -78,17 +78,23 @@ class EditProfileFragment : Fragment() {
                     guardianMobileNo.isNotEmpty()
 
             if (isValid) {
-                val guardian = Guardian(guardianName, guardianMobileNo)
-                val user = AppUser(
-                    uid,
-                    fullName,
-                    email, true, address, mobileNo, guardian, null
-                )
+                if (mobileNo != guardianMobileNo) {
+                    val guardian = Guardian(guardianName, guardianMobileNo)
+                    val user = AppUser(
+                        uid,
+                        fullName,
+                        email, true, address, mobileNo, guardian, null
+                    )
 
-                firestoreService.updateUser(
-                    uid,
-                    user
-                )
+                    firestoreService.updateUser(
+                        uid,
+                        user
+                    )
+                } else {
+                    binding.lbError.text = resources.getString(R.string.mobile_no_cannot_be_same)
+                    binding.lbError.visibility = View.VISIBLE
+                }
+
                 if (formName == resources.getString(R.string.create_profile))
                     findNavController().navigate(R.id.action_editProfile_to_main)
                 else

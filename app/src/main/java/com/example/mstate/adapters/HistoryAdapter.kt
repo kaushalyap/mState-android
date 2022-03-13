@@ -38,11 +38,8 @@ class HistoryAdapter(private val dataSet: List<HistoryItem>) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val stamp = Timestamp(System.currentTimeMillis())
-        val date = Date(stamp.time)
         val sdf = SimpleDateFormat("dd MMM yyyy,hh:mm a", Locale.getDefault())
-        sdf.timeZone = TimeZone.getTimeZone("Asia/Kolkata")
-        val split = sdf.format(date).split(',')
+        val split = sdf.format(dataSet[position].timestamp?.toDate() ?: return).split(',')
 
         viewHolder.lbDate.text = split[0]
         viewHolder.lbTime.text = split[1]

@@ -144,7 +144,7 @@ class FirestoreService {
                             Log.d(TAG, "${document.id} => ${document.data}")
                             histories.add(
                                 HistoryItem(
-                                    document.getString(TIMESTAMP_FIELD).toString(),
+                                    document.getTimestamp(TIMESTAMP_FIELD),
                                     document.getString(QUESTION_TYPE_FIELD).toString(),
                                     document.getDouble(SCORE_FIELD)?.toInt()
                                 )
@@ -157,7 +157,6 @@ class FirestoreService {
                 } else
                     Log.d(TAG, "Reading histories failed: ${task.exception}")
             }
-
     }
 
     fun readLastThreeHistories(callback: HistoryCallback, uid: String) {
@@ -173,7 +172,7 @@ class FirestoreService {
                             Log.d(TAG, "${document.id} => ${document.data}")
                             histories.add(
                                 HistoryItem(
-                                    document.getString(TIMESTAMP_FIELD).toString(),
+                                    document.getTimestamp(TIMESTAMP_FIELD),
                                     document.getString(QUESTION_TYPE_FIELD).toString(),
                                     document.getDouble(SCORE_FIELD)?.toInt()
                                 )
@@ -195,7 +194,5 @@ class FirestoreService {
         const val TIMESTAMP_FIELD: String = "timestamp"
         const val QUESTION_TYPE_FIELD: String = "questionnaireType"
         const val SCORE_FIELD: String = "score"
-
-
     }
 }

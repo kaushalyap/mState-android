@@ -164,4 +164,5 @@ Diagnoses of Major Depressive Disorder or Other Depressive Disorder also require
     <string name="pref_about_summary">Brief description about the app</string>
     <string name="pref_sign_out_summary">Log out of current account</string>
     <string name="pref_sign_out">sign_out</string>
+    <string name="mobile_no_cannot_be_same">Your and Guardians mobile number cannot be the same!</string>
 </resources>

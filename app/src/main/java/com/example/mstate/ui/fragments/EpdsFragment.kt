@@ -12,6 +12,7 @@ import com.example.mstate.adapters.EpdsAdapter
 import com.example.mstate.databinding.FragmentEpdsBinding
 import com.example.mstate.models.*
 import com.example.mstate.services.FirestoreService
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -58,9 +59,8 @@ class EpdsFragment : Fragment() {
     }
 
     private fun saveTestResult() {
-        val timestamp = (System.currentTimeMillis() / 100).toString()
         val historyItem = HistoryItem(
-            timestamp,
+            Timestamp.now(),
             QuestionnaireType.EPDS.name,
             epdsScoring.getScore()
         )

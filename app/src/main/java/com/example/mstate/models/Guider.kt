@@ -7,7 +7,10 @@ class Guider(private val lastList: List<HistoryItem>) {
         var epdsIncreasing = false
 
         val lastItemScore = lastList[0].score
-        val beforeLastItemScore = lastList[1].score
+        var beforeLastItemScore = -1
+        if (lastList.size >= 2) {
+            beforeLastItemScore = lastList[1].score!!
+        }
         val testType = lastList[0].questionnaireType
 
         var guidelines = ""
@@ -20,7 +23,7 @@ class Guider(private val lastList: List<HistoryItem>) {
             val isInPhq9MajorRange =
                 lastItemScore in GuidanceLevel.Major.phq9Boundaries.first..GuidanceLevel.Major.phq9Boundaries.second
 
-            if (lastItemScore != null && beforeLastItemScore != null) {
+            if (lastItemScore != null && beforeLastItemScore != -1) {
                 if (lastItemScore >= beforeLastItemScore) {
                     phq9Increasing = true
                     if (phq9Increasing) {
@@ -31,6 +34,12 @@ class Guider(private val lastList: List<HistoryItem>) {
                         }
                     }
                 }
+            } else {
+                when {
+                    isInPhq9MinimalRange -> guidelines = GuidanceLevel.Minimal.guideText
+                    isInPhq9MildRange -> guidelines = GuidanceLevel.Mild.guideText
+                    isInPhq9MajorRange -> guidelines = GuidanceLevel.Major.guideText
+                }
             }
         } else {
             val isInEpdsMinimalRange =
@@ -39,7 +48,7 @@ class Guider(private val lastList: List<HistoryItem>) {
                 lastItemScore in GuidanceLevel.Mild.epds9Boundaries.first..GuidanceLevel.Mild.epds9Boundaries.second
             val isInEpdsMajorRange =
                 lastItemScore in GuidanceLevel.Major.epds9Boundaries.first..GuidanceLevel.Major.epds9Boundaries.second
-            if (lastItemScore != null && beforeLastItemScore != null) {
+            if (lastItemScore != null && beforeLastItemScore != -1) {
                 if (lastItemScore >= beforeLastItemScore) {
                     epdsIncreasing = true
                     if (phq9Increasing) {
@@ -50,6 +59,11 @@ class Guider(private val lastList: List<HistoryItem>) {
                         }
                     }
                 }
+            }
+            when {
+                isInEpdsMinimalRange -> guidelines = GuidanceLevel.Minimal.guideText
+                isInEpdsMildRange -> guidelines = GuidanceLevel.Mild.guideText
+                isInEpdsMajorRange -> guidelines = GuidanceLevel.Major.guideText
             }
         }
         return guidelines

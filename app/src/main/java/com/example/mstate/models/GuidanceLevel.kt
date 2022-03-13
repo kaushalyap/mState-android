@@ -13,7 +13,7 @@ enum class GuidanceLevel(
     ),
     Major(
         "Please go to meet a psychiatrist with a family member or friend and explain your situation. Probably doctor may prescribe medicine and instruct your companion how to help you with the situation and ask you to exercise daily and change your way of negative thinking.\n\nPLEASE do not take medicine against the medical advice.",
-        Pair(10, 23),
+        Pair(10, 27),
         Pair(20, 30)
     )
 }
