@@ -5,7 +5,11 @@ enum class GuidanceLevel(
     val phq9Boundaries: Pair<Int, Int>,
     val epds9Boundaries: Pair<Int, Int>
 ) {
-    Minimal("Exercise 30 minutes a day!", Pair(1, 4), Pair(1, 9)),
+    Minimal(
+        "Exercise & Mediate 30 minutes per day respectively! Try talking about your problems with someone close to you.",
+        Pair(1, 4),
+        Pair(1, 9)
+    ),
     Mild(
         "Please meet psychiatrist and explain your situation. Then doctor may prescribe medicine or ask you to do physically intense exercise daily or suggest you to change your way of negative thinking.\n\nPLEASE do not take medicine against the medical advice.",
         Pair(5, 9),

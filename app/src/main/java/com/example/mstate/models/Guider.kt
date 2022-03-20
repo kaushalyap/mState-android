@@ -4,7 +4,7 @@ class Guider(private val lastList: List<HistoryItem>) {
 
     fun generateGuidelines(): String {
         var phq9Increasing = false
-        var epdsIncreasing = false
+        @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE") var epdsIncreasing = false
 
         val lastItemScore = lastList[0].score
         var beforeLastItemScore = -1
@@ -34,13 +34,9 @@ class Guider(private val lastList: List<HistoryItem>) {
                         }
                     }
                 }
-            } else {
-                when {
-                    isInPhq9MinimalRange -> guidelines = GuidanceLevel.Minimal.guideText
-                    isInPhq9MildRange -> guidelines = GuidanceLevel.Mild.guideText
-                    isInPhq9MajorRange -> guidelines = GuidanceLevel.Major.guideText
-                }
-            }
+            } else
+                guidelines = GuidanceLevel.Minimal.guideText
+
         } else {
             val isInEpdsMinimalRange =
                 lastItemScore in GuidanceLevel.Minimal.epds9Boundaries.first..GuidanceLevel.Minimal.epds9Boundaries.second
@@ -50,6 +46,7 @@ class Guider(private val lastList: List<HistoryItem>) {
                 lastItemScore in GuidanceLevel.Major.epds9Boundaries.first..GuidanceLevel.Major.epds9Boundaries.second
             if (lastItemScore != null && beforeLastItemScore != -1) {
                 if (lastItemScore >= beforeLastItemScore) {
+                    @Suppress("UNUSED_VALUE")
                     epdsIncreasing = true
                     if (phq9Increasing) {
                         when {
@@ -59,12 +56,9 @@ class Guider(private val lastList: List<HistoryItem>) {
                         }
                     }
                 }
-            }
-            when {
-                isInEpdsMinimalRange -> guidelines = GuidanceLevel.Minimal.guideText
-                isInEpdsMildRange -> guidelines = GuidanceLevel.Mild.guideText
-                isInEpdsMajorRange -> guidelines = GuidanceLevel.Major.guideText
-            }
+            } else
+                guidelines = GuidanceLevel.Minimal.guideText
+
         }
         return guidelines
     }
