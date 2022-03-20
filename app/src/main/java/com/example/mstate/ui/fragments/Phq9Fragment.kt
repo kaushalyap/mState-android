@@ -1,5 +1,6 @@
 package com.example.mstate.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -57,8 +58,10 @@ class Phq9Fragment : Fragment() {
     }
 
     private fun saveTestResult() {
+        val timestamp = Timestamp.now()
+
         val historyItem = HistoryItem(
-            Timestamp.now(),
+            timestamp,
             QuestionnaireType.PHQ9.name,
             phq9Scoring.getScore()
         )
@@ -68,11 +71,20 @@ class Phq9Fragment : Fragment() {
         if (firebaseAuth.currentUser?.uid != null) {
             val uid = firebaseAuth.currentUser?.uid.toString()
             firestoreService.addHistoryItem(uid, historyItem)
+            updateTodayTimestamp(timestamp)
         } else {
             firebaseAuth.signOut()
             findNavController().navigate(R.id.action_global_signIn)
         }
 
+    }
+
+    private fun updateTodayTimestamp(timestamp: Timestamp) {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            putLong(getString(R.string.pref_today_timestamp), timestamp.seconds)
+            apply()
+        }
     }
 
     private fun setupRecyclerView() {

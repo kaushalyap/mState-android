@@ -48,4 +48,18 @@
         android:textAllCaps="false"
         android:textColor="#808080"
         android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/note"
+        android:textColor="@android:color/darker_gray" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/test_can_be_only_taken_once_per_day_since_test_results_are_less_likely_to_change_before_a_day"
+        android:textColor="@android:color/darker_gray" />
+
 </LinearLayout>

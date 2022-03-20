@@ -165,4 +165,7 @@ Diagnoses of Major Depressive Disorder or Other Depressive Disorder also require
     <string name="pref_sign_out_summary">Log out of current account</string>
     <string name="pref_sign_out">sign_out</string>
     <string name="mobile_no_cannot_be_same">Your and Guardians mobile number cannot be the same!</string>
+    <string name="pref_today_timestamp">today_timestamp</string>
+    <string name="test_can_be_only_taken_once_per_day_since_test_results_are_less_likely_to_change_before_a_day">Test can be only taken once per day, since test results are less likely to change before a day. So pick your questionnaire type appropriately and take time to fill the questionnaire accurate as possible.</string>
+    <string name="note">Note :</string>
 </resources>

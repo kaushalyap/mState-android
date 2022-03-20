@@ -28,7 +28,7 @@ class AutomatedResponse {
 
         val telephony = Telephony()
         if (smsOn) {
-            telephony.sendSMS(context)
+            telephony.sendSMS()
         }
         if (callOn) {
             telephony.makeCall(activity)

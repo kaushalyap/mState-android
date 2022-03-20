@@ -1,7 +1,6 @@
 package com.example.mstate.models
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.telephony.SmsManager
@@ -34,7 +33,7 @@ class Telephony {
         }, auth.currentUser?.uid.toString())
     }
 
-    fun sendSMS(context: Context) {
+    fun sendSMS() {
         firestoreService.readUser(object : UserCallback {
             override fun onPostExecute(dRef: String) {}
 
