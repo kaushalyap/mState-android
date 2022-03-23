@@ -44,6 +44,8 @@ class QuestionnaireListFragment : Fragment() {
 
         val savedTimestamp = Timestamp(prefValue, 0)
 
+        val currentTimestamp = Timestamp.now()
+
         if (savedTimestamp.seconds != 0L) {
 
             val nextTestAvailabilityTimestamp =
@@ -51,27 +53,21 @@ class QuestionnaireListFragment : Fragment() {
 
             Log.d(
                 TAG,
-                "Saved: ${savedTimestamp.seconds}, Next: ${nextTestAvailabilityTimestamp.seconds}"
+                "Saved: ${savedTimestamp.seconds}, Next: ${nextTestAvailabilityTimestamp.seconds}, current: ${currentTimestamp.seconds}"
             )
 
-            if (savedTimestamp.seconds < nextTestAvailabilityTimestamp.seconds) {
-                binding.btnPhq.isEnabled = false
-                binding.btnPhq.alpha = 0.5f
-                binding.btnEpds.isEnabled = false
-                binding.btnEpds.alpha = 0.5f
-            } else {
+            if (nextTestAvailabilityTimestamp.seconds < currentTimestamp.seconds) {
                 binding.btnPhq.isEnabled = true
                 binding.btnPhq.alpha = 1f
                 binding.btnEpds.isEnabled = true
                 binding.btnEpds.alpha = 1f
-
+            } else {
+                binding.btnPhq.isEnabled = false
+                binding.btnPhq.alpha = 0.5f
+                binding.btnEpds.isEnabled = false
+                binding.btnEpds.alpha = 0.5f
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        disableTestButtons()
     }
 
     override fun onDestroyView() {
