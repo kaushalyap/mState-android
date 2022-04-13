@@ -99,6 +99,7 @@ class FirestoreService {
                 "name", appUser.name,
                 "address", appUser.address,
                 "mobileNo", appUser.mobileNo,
+                "profileComplete", appUser.profileComplete,
                 "guardian.fullName", appUser.guardian?.fullName,
                 "guardian.mobileNo", appUser.guardian?.mobileNo,
                 "settings.smsOn", appUser.settings?.smsOn,
