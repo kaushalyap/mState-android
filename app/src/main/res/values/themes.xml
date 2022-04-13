@@ -15,4 +15,5 @@
         <item name="android:fontFamily">@font/poppins_regular</item>
         <item name="fontFamily">@font/poppins_regular</item>
     </style>
+
 </resources>

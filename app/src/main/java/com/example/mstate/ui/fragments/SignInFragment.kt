@@ -21,6 +21,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @SuppressLint("LogConditional")
 class SignInFragment : Fragment() {
@@ -87,6 +89,7 @@ class SignInFragment : Fragment() {
 
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth = Firebase.auth
         auth.signInWithCredential(credential)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
@@ -101,6 +104,7 @@ class SignInFragment : Fragment() {
                         null,
                         null
                     )
+                    firestoreService = FirestoreService()
                     firestoreService.addUser(object : UserCallback {
 
                         override fun onPostExecute(dRef: String) {
